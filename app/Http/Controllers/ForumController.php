@@ -20,3 +20,6 @@ class ForumController  extends Controller
         return view('frontend.forum.profile',compact([]));
     }
 }
+
+
+

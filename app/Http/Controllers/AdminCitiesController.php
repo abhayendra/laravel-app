@@ -67,8 +67,8 @@
 			| @parent_columns = Sparate with comma, e.g : name,created_at
 	        | 
 	        */
-	        $this->sub_module = array();
 
+	        $this->sub_module = array();
 
 	        /* 
 	        | ---------------------------------------------------------------------- 
@@ -81,8 +81,8 @@
 	        | @showIf 	   = If condition when action show. Use field alias. e.g : [id] == 1
 	        | 
 	        */
-	        $this->addaction = array();
 
+	        $this->addaction = array();
 
 	        /* 
 	        | ---------------------------------------------------------------------- 
@@ -94,9 +94,9 @@
 	        | Then about the action, you should code at actionButtonSelected method 
 	        | 
 	        */
+
 	        $this->button_selected = array();
 
-	                
 	        /* 
 	        | ---------------------------------------------------------------------- 
 	        | Add alert message to this module at overheader
@@ -105,10 +105,9 @@
 	        | @type    = warning,success,danger,info        
 	        | 
 	        */
-	        $this->alert        = array();
-	                
 
-	        
+	        $this->alert = array();
+
 	        /* 
 	        | ---------------------------------------------------------------------- 
 	        | Add more button to header button 
@@ -118,9 +117,8 @@
 	        | @icon  = Icon from Awesome.
 	        | 
 	        */
+
 	        $this->index_button = array();
-
-
 
 	        /* 
 	        | ---------------------------------------------------------------------- 
@@ -130,9 +128,9 @@
 	        | @color = Default is none. You can use bootstrap success,info,warning,danger,primary.        
 	        | 
 	        */
+
 	        $this->table_row_color = array();     	          
 
-	        
 	        /*
 	        | ---------------------------------------------------------------------- 
 	        | You may use this bellow array to add statistic at dashboard 
@@ -140,9 +138,8 @@
 	        | @label, @count, @icon, @color 
 	        |
 	        */
+
 	        $this->index_statistic = array();
-
-
 
 	        /*
 	        | ---------------------------------------------------------------------- 
@@ -152,8 +149,8 @@
 	        | $this->script_js = "function() { ... }";
 	        |
 	        */
-	        $this->script_js = NULL;
 
+	        $this->script_js = NULL;
 
             /*
 	        | ---------------------------------------------------------------------- 
@@ -163,10 +160,9 @@
 	        | $this->pre_index_html = "<p>test</p>";
 	        |
 	        */
+
 	        $this->pre_index_html = null;
-	        
-	        
-	        
+
 	        /*
 	        | ---------------------------------------------------------------------- 
 	        | Include HTML Code after index table 
@@ -175,10 +171,9 @@
 	        | $this->post_index_html = "<p>test</p>";
 	        |
 	        */
+
 	        $this->post_index_html = null;
-	        
-	        
-	        
+
 	        /*
 	        | ---------------------------------------------------------------------- 
 	        | Include Javascript File 
@@ -187,10 +182,9 @@
 	        | $this->load_js[] = asset("myfile.js");
 	        |
 	        */
+
 	        $this->load_js = array();
-	        
-	        
-	        
+
 	        /*
 	        | ---------------------------------------------------------------------- 
 	        | Add css style at body 
@@ -199,10 +193,9 @@
 	        | $this->style_css = ".style{....}";
 	        |
 	        */
+
 	        $this->style_css = NULL;
-	        
-	        
-	        
+
 	        /*
 	        | ---------------------------------------------------------------------- 
 	        | Include css File 
@@ -211,9 +204,9 @@
 	        | $this->load_css[] = asset("myfile.css");
 	        |
 	        */
+
 	        $this->load_css = array();
-	        
-	        
+
 	    }
 
 
@@ -227,7 +220,6 @@
 	    */
 	    public function actionButtonSelected($id_selected,$button_name) {
 	        //Your code here
-	            
 	    }
 
 
@@ -239,8 +231,7 @@
 	    |
 	    */
 	    public function hook_query_index(&$query) {
-	        //Your code here
-	            
+	        //Your code her
 	    }
 
 	    /*
@@ -314,7 +305,7 @@
 
 	    }
 
-	    /* 
+	    /*
 	    | ---------------------------------------------------------------------- 
 	    | Hook for execute command after delete public static function called
 	    | ----------------------------------------------------------------------     

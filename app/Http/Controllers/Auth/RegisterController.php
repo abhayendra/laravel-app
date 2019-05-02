@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Helpers\Helper;
 
 class RegisterController extends Controller
 {
@@ -70,6 +71,10 @@ class RegisterController extends Controller
 
     protected function create(array $data)
     {
+        $settings = Helper::setting();
+        echo "<pre>"; print_r($settings); echo "</pre>";
+        //die();
+
         return User::create([
             'name' => $data['full_name'],
             'email' => $data['email'],
@@ -80,5 +85,15 @@ class RegisterController extends Controller
             'date_of_birth' => $data['date_of_birth'],
             'password' => bcrypt($data['password']),
         ]);
+
+
+        $data = ['name'=>$data['full_name'],'email'=>$data['email'],''];
+        Mail::send('email.register', $data, function($message) {
+            $message->to('er.abhayendra@gmail.com', 'Tutorials Point')->subject
+            ('Laravel Basic Testing Mail');
+            $message->from($settings['email_sender'],$settings['appname']);
+        });
+
+
     }
 }

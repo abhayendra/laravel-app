@@ -29,7 +29,6 @@ class Helper
      return $popularDestination;
  }
 
-
  public static function featureTour() {
    return $featureTour = ['Niagara Fall'];
  }
@@ -39,7 +38,7 @@ class Helper
  }
 
  public static function tourDetails($id) {
-   $tourDetails = Tour::find($id);
+   $tourDetails = Tour::with('tourPrice')->find($id);
    return $tourDetails;
  }
 

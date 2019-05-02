@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Country;
 use App\Tour;
 use App\UserLog;
 use Browser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Stevebauman\Location\Facades\Location;
+use Illuminate\Support\Facades\DB;
 
 class AjaxController extends Controller
 {
@@ -27,7 +29,7 @@ class AjaxController extends Controller
             }
             $data.= "</ul>";
         }
-        if(count($tourAttractions)>0) { 
+        if(count($tourAttractions)>0) {
             $data.= "<ul class=\"search_li star_li\">";
             foreach($tourAttractions as $attractions) {
                 $attractionsUrl = urlencode($attractions->attractions);
@@ -49,14 +51,13 @@ class AjaxController extends Controller
         }
         $data.= "</div>
                  <div class=\"more_result\">
-                  <a href=\"#\"><i class=\"fa fa-search\"></i> Find more results for niagara </a>
+                  <a href=\"url(/)\"><i class=\"fa fa-search\"></i> Find more results for niagara </a>
                 </div>";
 
         echo $data;
     }
 
     public function clienLog() {
-
 
         if(Browser::isMobile()) {
             $platefrom = "Mobile";
@@ -80,7 +81,7 @@ class AjaxController extends Controller
         $ip = \Request::ip();;
         $position = Location::get($ip);
 
-         $userLog = new UserLog; 
+         $userLog = new UserLog;
          $userLog->user_id = $user_id;
          $userLog->session_id = "0000000";
          $userLog->log_type = $_GET['log_type'];
@@ -96,6 +97,24 @@ class AjaxController extends Controller
          $userLog->client_time = $_GET['client_time'];
          $userLog->save();
 
+    }
+
+
+    public function country() {
+        $countryList =  Country::pluck('name','code');
+        return $countryList;
+    }
+
+
+    public function city($id) {
+        $cityList = City::where('id',$id)->pluck('id','name');
+        return $cityList;
+    }
+
+
+    public function tourVisit() {
+        $tourId = $_GET['tourId'];
+        $visite = Tour::where('id',$tourId)->increment('visit');
     }
 
 

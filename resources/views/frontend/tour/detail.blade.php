@@ -1,6 +1,6 @@
 @extends('frontend.layout.app')
 @section('content')
-    <?php //echo "<pre>"; print_r($tour); echo "<pre>"; die();   ?>
+    <?php //echo "<pre>"; print_r($tour); echo "</pre>";   ?>
     <!--mobile search-->
     <div class="mobile_search">
         <input name="" type="text" placeholder="Search Niagara Falls"> <span id="search_hide"><i class="fa fa-times" aria-hidden="true"></i></span>
@@ -21,7 +21,6 @@
                     <li class="active">Toronto</li>
                 </ol>
                 <div class="clearfix"></div>
-
             </div>
         </div>
     </div>
@@ -55,7 +54,6 @@
                             <li><a href="#expand-5">Map</a></li>
                             <li></li>
                         </ul>
-
                         <div class="share">
                             <ul>
                                 <li><a href="#"><i class="fa fa-heart-o" aria-hidden="true"></i> Save</a></li>
@@ -71,7 +69,7 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class=""></div>
-                    <div class="price3"><span>From USD</span> $132.00</div>
+                    <div class="price3"><span>From USD</span> $132.00</div>z
                     <div class="check_ava_wra">
                         <div class="check_ava"><a href="#">Check Availability</a></div>
                         <div class="share2">
@@ -229,45 +227,34 @@
                                         </div>
                                     </td>
                                 </tr>
+                                @foreach($tour->tourPrice as $price)
                                 <tr>
                                     <td>
-                                        <select  name="adult">
-                                            <option value="0">Adult(13+)</option>
-                                            @for($adult=1; $adult<=9; $adult++)
-                                            <option value="{!! $adult !!}">{!! $adult !!}</option>
-                                            @endfor
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <select name="child">
-                                            <option value="0">Child(5 to 12)</option>
-                                            @for($child=1; $child<=9; $child++ )
-                                                <option value="{!! $child !!}">{!! $child !!}</option>
-                                            @endfor
-                                        </select>
+                                        <label>{!! $price->type !!} ( CA$ {!! $price->prices !!} )</label>
+                                        <div class="input-group">
+                                          <span class="input-group-btn">
+                                              <button type="button" class="btn btn-default btn-number" disabled="disabled" data-type="minus" data-field="travelers[{!! $price->type !!}]">
+                                                  <span class="glyphicon glyphicon-minus"></span>
+                                              </button>
+                                          </span>
+
+                                          <input type="text" name="travelers[{!! $price->type !!}]" class="form-control input-number" value="{!! $price->min !!}" min="{!! $price->min !!}" max="{!! $price->max !!}">
+
+                                          <span class="input-group-btn">
+                                              <button type="button" class="btn btn-default btn-number" data-type="plus" data-field="travelers[{!! $price->type !!}]">
+                                                  <span class="glyphicon glyphicon-plus"></span>
+                                              </button>
+                                          </span>
+                                        </div>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        <select name="infant">
-                                            <option value="0">Infant(0 to 4)</option>
-                                            @for($infant=1; $infant<=9; $infant++ )
-                                                <option value="{!! $infant !!}">{!! $infant !!}</option>
-                                            @endfor
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <select name="senior">
-                                            <option value="0">Seniors(60s+)</option>
-                                            @for($senior=1; $senior<=9; $senior++ )
-                                                <option value="{!! $senior !!}">{!! $senior !!}</option>
-                                            @endfor
-                                        </select>
-                                    </td>
+                                @endforeach
+
                                 <tr>
                                     <td colspan="2"><button type="submit" class="btn3">Proceed Booking</button></td>
                                 </tr>
-                                </tr>
+
+
                             </table>
                         </div>
                     </div>
@@ -277,4 +264,88 @@
         </div>
     </div>
     <!--end listing-->
+
+    <script>
+        $(window).load(function() {
+            var dt = new Date();
+            $.ajax({
+                type: "GET",
+                url: "<?php echo url('tour-visit') ?>",
+                data: { tourId: "<?php echo $tour->id ?>" },
+            });
+        });
+    </script>
+    <script>
+        $('.btn-number').click(function(e){
+            e.preventDefault();
+            fieldName = $(this).attr('data-field');
+            type      = $(this).attr('data-type');
+            var input = $("input[name='"+fieldName+"']");
+            var currentVal = parseInt(input.val());
+            if (!isNaN(currentVal)) {
+                if(type == 'minus') {
+
+                    if(currentVal > input.attr('min')) {
+                        input.val(currentVal - 1).change();
+                    }
+                    if(parseInt(input.val()) == input.attr('min')) {
+                        $(this).attr('disabled', true);
+                    }
+
+                } else if(type == 'plus') {
+
+                    if(currentVal < input.attr('max')) {
+                        input.val(currentVal + 1).change();
+                    }
+                    if(parseInt(input.val()) == input.attr('max')) {
+                        $(this).attr('disabled', true);
+                    }
+
+                }
+            } else {
+                input.val(0);
+            }
+        });
+        $('.input-number').focusin(function(){
+            $(this).data('oldValue', $(this).val());
+        });
+        $('.input-number').change(function() {
+
+            minValue =  parseInt($(this).attr('min'));
+            maxValue =  parseInt($(this).attr('max'));
+            valueCurrent = parseInt($(this).val());
+
+            name = $(this).attr('name');
+            if(valueCurrent >= minValue) {
+                $(".btn-number[data-type='minus'][data-field='"+name+"']").removeAttr('disabled')
+            } else {
+                alert('Sorry, the minimum value was reached');
+                $(this).val($(this).data('oldValue'));
+            }
+            if(valueCurrent <= maxValue) {
+                $(".btn-number[data-type='plus'][data-field='"+name+"']").removeAttr('disabled')
+            } else {
+                alert('Sorry, the maximum value was reached');
+                $(this).val($(this).data('oldValue'));
+            }
+
+
+        });
+        $(".input-number").keydown(function (e) {
+            // Allow: backspace, delete, tab, escape, enter and .
+            if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 190]) !== -1 ||
+                // Allow: Ctrl+A
+                (e.keyCode == 65 && e.ctrlKey === true) ||
+                // Allow: home, end, left, right
+                (e.keyCode >= 35 && e.keyCode <= 39)) {
+                // let it happen, don't do anything
+                return;
+            }
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+
+    </script>
 @endsection

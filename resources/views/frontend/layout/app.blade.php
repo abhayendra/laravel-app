@@ -27,6 +27,7 @@
     {!! Html::style('http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css') !!}
     {!! Html::script('https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js') !!}
     {!! Html::script('https://oss.maxcdn.com/respond/1.4.2/respond.min.js') !!}
+    {!! Html::script('resources/assets/js/jquery.min.js') !!}
     @php
     $cartCollection = Cart::getContent();
     @endphp
@@ -185,7 +186,6 @@ s                    <option>Dollar</option>
 </div>
 <!--end footer-->
 <a href="#" class="scrollToTop"><i class="fa fa-arrow-circle-up" aria-hidden="true"></i></a>
-{!! Html::script('resources/assets/js/jquery.min.js') !!}
 {!! Html::script('resources/assets/js/bootstrap.min.js') !!}
 {!! Html::script('resources/assets/js/init.js') !!}
 {!! Html::script('https://cdnjs.cloudflare.com/ajax/libs/platform/1.3.5/platform.js') !!}

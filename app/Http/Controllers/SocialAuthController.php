@@ -14,18 +14,23 @@ class SocialAuthController extends Controller
     }
 
     public function callback($service) {
-         $user = Socialite::with ( $service )->user();
+
+         $user = Socialite::with ($service)->user();
+
+         echo "<pre>"; print_r($user); echo "</Pre>"; die();
+
 
          if($service=="google") {
          $userDetail = User::where('email',$user->email)->first();
-         Auth::loginUsingId(2);
+         //Auth::loginUsingId(2);
          return redirect('dashboard'); 
        } else {
         echo  "Facebook Required HTTPS for login authtication";
        }
+
+
         // return redirect()->route('dashboard');
          //echo "<pre>"; print_r($userDetail); die();
-
         /*
          if ($userDetail === 'NULL')
          {

@@ -111,13 +111,21 @@
                     </div>
                 </div>
                 {!! Form::close() !!}
+
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                     <div class="summary_wra">
-                        <h3>Your Booking Summary</h3>
+                        <h3>Your Booking Summary </h3>
                         @php $i=1;  @endphp
                         @foreach($cartCollection->toArray() as $cart)
                         <h4>{!! $cart['name'] !!}</h4>
-                       @php $tourdetail = \App\Helpers\Helper::tourDetails($cart['id']); @endphp
+                         @php $tourdetail = \App\Helpers\Helper::tourDetails($cart['id']); @endphp
+
+                         @php $travlers = array_except($cart[attributes],[date_of_booking]);  @endphp
+
+                        @foreach($travlers as $type=>$count)
+                        <div class="srart"><span>{!! $count !!}  {!! ucfirst($type) !!} X {!!  "200";  !!} </span> </div>
+                        @endforeach
+
                         <div class="srart"><span>Tour Location:</span> {!! $tourdetail->tour_location !!} </div>
                         <div class="srart"><span>Meeting Point:</span> {!! $tourdetail->tour_from !!}</div>
                         <div class="srart"><span>Departure Time:</span> {!! $tourdetail->departure_time !!} Daily</div>

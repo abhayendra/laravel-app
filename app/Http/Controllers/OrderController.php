@@ -22,30 +22,35 @@ class OrderController extends Controller
     }
 
     public function saveCheckout(Request $request) {
+
         if($request->date_of_booking=="") {
             return Redirect::back()->withErrors(['msg', 'Date of Booking Required ']);
         }
-        $travllers =  $request->adult + $request->senior;
-        if($travllers=="0") {
-            return Redirect::back()->withErrors(['msg', 'Please Select at least one Adult or Senior Traveler']);
-        }
-          $tourDetail = Tour::where('id',$request->tour_id)->first();
-          $travllerCount= $request->adult+$request->child+$request->senior;
-            Cart::add(array(
-            'id' => $request->tour_id,
-            'name' => $tourDetail->title,
-            'price' => $tourDetail->sell_price - $tourDetail->discount,
-            'quantity' => $travllerCount,
-            'attributes' => array(
-               'adult'=>$request->adult,
-               'child'=>$request->child,
-               'senior' => $request->senior,
-               'infant'=>$request->infant,
-               'date_of_booking' => $request->date_of_booking,
-            )
-          ));
-          return redirect('checkout');
 
+        $travllers =  array_sum($request->travelers);
+
+        if($travllers=="0") {
+            return Redirect::back()->withErrors(['msg', 'Please Select at least one Adult Traveler']);
+        }
+
+        $attributes['date_of_booking'] =  $request->date_of_booking;
+
+        foreach($request->travelers as $type=>$count) {
+            $attributes[$type] = $count;
+        }
+
+       // print_r($attributes); die();
+
+      $tourDetail = Tour::where('id',$request->tour_id)->first();
+      $travllerCount= $request->adult+$request->child+$request->senior;
+        Cart::add(array(
+        'id' => $request->tour_id,
+        'name' => $tourDetail->title,
+        'price' => 0,
+        'quantity' => $travllers,
+        'attributes' => $attributes
+      ));
+      return redirect('checkout');
     }
 
     public function saveOrder(Request $request) {
@@ -69,6 +74,12 @@ class OrderController extends Controller
           $i++;
       }
       return \redirect('checkout_payment');
+
+    }
+
+
+    public function payment() {
+
     }
 
 }

@@ -10,17 +10,9 @@ class HomeController extends Controller
     {
         //$this->middleware('auth');
     }
-    public function index() {
 
-      return view('frontend.tour.index');
-    }
-
-    public function listing() {
-      return view('frontend.tour.listing');
-    }
-
-    public function detail() {
-      return view('frontend.tour.detail');
+    public function changePassword() {
+        return view('');
     }
 
 

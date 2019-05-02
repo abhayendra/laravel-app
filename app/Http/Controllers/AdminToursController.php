@@ -1,10 +1,11 @@
 <?php namespace App\Http\Controllers;
 
-	use App\TourCategory;
-    use Session;
+	use Session;
 	use Request;
 	use DB;
 	use CRUDBooster;
+	use App\TourCategory; 
+	use App\Country; 
 
 	class AdminToursController extends \crocodicstudio\crudbooster\controllers\CBController {
 
@@ -60,7 +61,7 @@
 			$this->form[] = ['label'=>'Departure Return Location','name'=>'departure_return_location','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
 			$this->form[] = ['label'=>'Departure Time','name'=>'departure_time','type'=>'time','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
 			$this->form[] = ['label'=>'Price Includes','name'=>'price_includes','type'=>'text','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Price Excludes','name'=>'price_excludes','type'=>'text','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Price Excludes','name'=>'price_excludes','type'=>'text','validation'=>'srequired|string|min:5|max:5000','width'=>'col-sm-10'];
 			$this->form[] = ['label'=>'Complementaries','name'=>'complementaries','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
 			$this->form[] = ['label'=>'Images','name'=>'images','type'=>'upload','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
 			$this->form[] = ['label'=>'Departure Point','name'=>'departure_point','type'=>'text','validation'=>'required','width'=>'col-sm-10'];
@@ -131,8 +132,8 @@
 	        | Then about the action, you should code at actionButtonSelected method 
 	        | 
 	        */
-	        $this->button_selected = array();
 
+	        $this->button_selected = array();
 	                
 	        /* 
 	        | ---------------------------------------------------------------------- 
@@ -142,9 +143,8 @@
 	        | @type    = warning,success,danger,info        
 	        | 
 	        */
-	        $this->alert        = array();
-	                
 
+	        $this->alert  = array();
 	        
 	        /* 
 	        | ---------------------------------------------------------------------- 
@@ -167,9 +167,7 @@
 	        | @color = Default is none. You can use bootstrap success,info,warning,danger,primary.        
 	        | 
 	        */
-	        $this->table_row_color = array();     	          
-
-	        
+	        $this->table_row_color = array();
 	        /*
 	        | ---------------------------------------------------------------------- 
 	        | You may use this bellow array to add statistic at dashboard 
@@ -178,9 +176,6 @@
 	        |
 	        */
 	        $this->index_statistic = array();
-
-
-
 	        /*
 	        | ---------------------------------------------------------------------- 
 	        | Add javascript at body 
@@ -189,9 +184,8 @@
 	        | $this->script_js = "function() { ... }";
 	        |
 	        */
-	        $this->script_js = NULL;
-
-
+			$this->script_js = NULL;
+			// add from
             /*
 	        | ---------------------------------------------------------------------- 
 	        | Include HTML Code before index table 
@@ -201,9 +195,6 @@
 	        |
 	        */
 	        $this->pre_index_html = null;
-	        
-	        
-	        
 	        /*
 	        | ---------------------------------------------------------------------- 
 	        | Include HTML Code after index table 
@@ -213,8 +204,6 @@
 	        |
 	        */
 	        $this->post_index_html = null;
-	        
-	        
 	        
 	        /*
 	        | ---------------------------------------------------------------------- 
@@ -226,8 +215,6 @@
 	        */
 	        $this->load_js = array();
 	        
-	        
-	        
 	        /*
 	        | ---------------------------------------------------------------------- 
 	        | Add css style at body 
@@ -237,9 +224,6 @@
 	        |
 	        */
 	        $this->style_css = NULL;
-	        
-	        
-	        
 	        /*
 	        | ---------------------------------------------------------------------- 
 	        | Include css File 
@@ -251,33 +235,34 @@
 	        $this->load_css = array();
 	        
 	        
-	    }
+		}
+		
+		/*  Custome from for add tour record */ 
+		
 
+		public function getAdd() {
 
-        public function getAdd()
-        {
-            if(!CRUDBooster::isCreate() && $this->global_privilege==FALSE || $this->button_add==FALSE) {
+            if(!CRUDBooster::isUpdate() && $this->global_privilege==FALSE || $this->button_edit==FALSE) {
                 CRUDBooster::redirect(CRUDBooster::adminPath(),trans("crudbooster.denied_access"));
             }
-            $data['page_title'] = "Add Tour";
-            $data['categories'] = TourCategory::pluck('category_name','id');
-            $data['countries'] =
-            $this->cbView('backend.tour.create',$data);
-        }
+            $data['page_title']= "Add a new Tour";
+			$data['categories'] = TourCategory::where('status',1)->pluck('category_name','id'); 
+			$data['countries'] = Country::pluck('name','code'); 
+			$this->cbView('backend.tour.add_tour',$data); 
+		}
 
 
+	    /*
+	    | ---------------------------------------------------------------------- 
+	    | Hook for button selected
+	    | ---------------------------------------------------------------------- 
+	    | @id_selected = the id selected
+	    | @button_name = the name of button
+	    |
+	    */
 
-        /*
-        | ----------------------------------------------------------------------
-        | Hook for button selected
-        | ----------------------------------------------------------------------
-        | @id_selected = the id selected
-        | @button_name = the name of button
-        |
-        */
 	    public function actionButtonSelected($id_selected,$button_name) {
-	        //Your code here
-	            
+          // Your code hear
 	    }
 
 
@@ -290,7 +275,6 @@
 	    */
 	    public function hook_query_index(&$query) {
 	        //Your code here
-	            
 	    }
 
 	    /*
@@ -298,7 +282,8 @@
 	    | Hook for manipulate row of index table html 
 	    | ---------------------------------------------------------------------- 
 	    |
-	    */    
+	    */
+
 	    public function hook_row_index($column_index,&$column_value) {	        
 	    	//Your code here
 	    }
@@ -312,7 +297,6 @@
 	    */
 	    public function hook_before_add(&$postdata) {        
 	        //Your code here
-
 	    }
 
 	    /* 
@@ -324,7 +308,6 @@
 	    */
 	    public function hook_after_add($id) {        
 	        //Your code here
-
 	    }
 
 	    /* 
@@ -337,7 +320,6 @@
 	    */
 	    public function hook_before_edit(&$postdata,$id) {        
 	        //Your code here
-
 	    }
 
 	    /* 
@@ -348,8 +330,7 @@
 	    | 
 	    */
 	    public function hook_after_edit($id) {
-	        //Your code here 
-
+	        //Your code here
 	    }
 
 	    /* 
@@ -361,7 +342,6 @@
 	    */
 	    public function hook_before_delete($id) {
 	        //Your code here
-
 	    }
 
 	    /* 
@@ -373,10 +353,7 @@
 	    */
 	    public function hook_after_delete($id) {
 	        //Your code here
-
 	    }
-
-
 
 	    //By the way, you can still create your own method in here... :) 
 
