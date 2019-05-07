@@ -33,9 +33,9 @@ Route::get('/callback/{service}','SocialAuthController@callback');
 Route::get('/','TourController@index');
 Route::get('location/{keyword}','TourController@listingTour');
 Route::get('attractions/{keyword}','TourController@listingTour');
-Route::get('tour/{slug}','TourController@detailTour'); 
+Route::get('tour/{slug}','TourController@detailTour');
 
-Route::post('order/checkout','OrderController@saveCheckout');
+Route::post('order/checkout','OrderController@saveCheckout'); 
 Route::get('checkout','OrderController@checkout');
 Route::get('checkout_payment','OrderController@checkoutPayment');
 Route::post('order/save-order','OrderController@saveOrder');
@@ -43,7 +43,6 @@ Route::post('order/save-order','OrderController@saveOrder');
 //Ajax Controller
 Route::get('search','AjaxController@searchResult');
 Route::get('client-log','AjaxController@clienLog');
-Route::get('tour-visit','AjaxController@tourVisit');
 
 //Blog Controller
 Route::get('blog','BlogController@index');
@@ -53,3 +52,5 @@ Route::get('blog/details/{slug}/{id}','BlogController@details');
 Route::get('forum','ForumController@index');
 Route::get('forum/show_topic','ForumController@detail');
 Route::get('forum/profile','ForumController@profile');
+
+Route::get('admin/getProvince','AdminAjaxController@getProvince');
