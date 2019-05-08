@@ -39,6 +39,8 @@
 
     <?php echo Html::script('https://oss.maxcdn.com/respond/1.4.2/respond.min.js'); ?>
 
+    <?php echo Html::script('resources/assets/js/jquery.min.js'); ?>
+
     <?php
     $cartCollection = Cart::getContent();
     ?>
@@ -205,8 +207,6 @@ s                    <option>Dollar</option>
 </div>
 <!--end footer-->
 <a href="#" class="scrollToTop"><i class="fa fa-arrow-circle-up" aria-hidden="true"></i></a>
-<?php echo Html::script('resources/assets/js/jquery.min.js'); ?>
-
 <?php echo Html::script('resources/assets/js/bootstrap.min.js'); ?>
 
 <?php echo Html::script('resources/assets/js/init.js'); ?>
