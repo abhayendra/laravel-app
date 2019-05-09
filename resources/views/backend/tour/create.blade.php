@@ -1124,7 +1124,6 @@
 
                     <div class="col-sm-10">
                         <input type="text" title="Price Excludes" required="" maxlength="5000" class="form-control" name="price_excludes" id="price_excludes" value="">
-
                         <div class="text-danger"></div>
                         <p class="help-block"></p>
 
@@ -1155,19 +1154,24 @@
 
                     <INPUT type="button" value="Delete Row" onclick="deleteRow('dataTable')" />
 
-                    <TABLE id="dataTable" width="100%" border="1">
-                        <TR>
-                            <TD style="border: none">
+                        <div class="row" id="dataTable">
+                            <div class="col-md-4">
                                 <SELECT name="country" class="form-control">
                                     <OPTION value="in">Adult</OPTION>
-                                    <OPTION value="de">children</OPTION>
+                                    <OPTION value="de">children</OPTION>`
                                     <OPTION value="fr">Student</OPTION>
                                 </SELECT>
-                            </TD>
-                            <TD><INPUT type="text" class="form-control" name="txt"/></TD>
-                        </TR>
-                    </TABLE>
-                    </div>
+                            </div>
+                            <div class="col-md-4">
+                                <INPUT type="text" class="form-control" name="txt"/>
+                            </div>
+                            <div class="col-md-4">
+                                <INPUT type="text" class="form-control" name="txt"/>
+                            </div>
+                        </div>
+
+
+                   </div>
 
                 </div>
 
