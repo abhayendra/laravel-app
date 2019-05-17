@@ -52,5 +52,5 @@ Route::get('blog/details/{slug}/{id}','BlogController@details');
 Route::get('forum','ForumController@index');
 Route::get('forum/show_topic','ForumController@detail');
 Route::get('forum/profile','ForumController@profile');
-
 Route::get('admin/getProvince','AdminAjaxController@getProvince');
+//Route::get('admin/')

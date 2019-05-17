@@ -64,8 +64,9 @@
 			| @parent_columns = Sparate with comma, e.g : name,created_at
 	        | 
 	        */
-	        $this->sub_module = array();
 
+
+	        $this->sub_module = array();
 
 	        /* 
 	        | ---------------------------------------------------------------------- 
@@ -103,9 +104,7 @@
 	        | 
 	        */
 	        $this->alert        = array();
-	                
 
-	        
 	        /* 
 	        | ---------------------------------------------------------------------- 
 	        | Add more button to header button 

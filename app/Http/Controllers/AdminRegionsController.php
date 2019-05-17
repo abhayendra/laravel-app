@@ -305,7 +305,6 @@
 	    */
 	    public function hook_before_delete($id) {
 	        //Your code here
-
 	    }
 
 	    /* 
@@ -317,7 +316,6 @@
 	    */
 	    public function hook_after_delete($id) {
 	        //Your code here
-
 	    }
 
 

@@ -49,6 +49,7 @@ class AjaxController extends Controller
             }
             $data.= "</ul>";
         }
+
         $data.= "</div>
                  <div class=\"more_result\">
                   <a href=\"url(/)\"><i class=\"fa fa-search\"></i> Find more results for niagara </a>

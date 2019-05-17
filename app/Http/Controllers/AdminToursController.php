@@ -2,6 +2,8 @@
 
 	use App\Country;
     use App\TourCategory;
+    use App\TravelerType;
+    use Illuminate\Support\Facades\Input;
     use Session;
 	use Request;
 	use DB;
@@ -263,9 +265,18 @@
             $data['page_title'] = "Add Tour";
             $data['categories'] = TourCategory::pluck('category_name','id');
             $data['countries'] = Country::pluck('name','id');
+            $data['travelerType']= TravelerType::all();
             $this->cbView('backend.tour.create',$data);
         }
 
+
+        public function AddSave(Request $request)
+        {
+            echo "<pre>";
+            print_r(Input::all());
+            echo "</pre>";
+            exit;
+        }
 
 
         /*
@@ -277,8 +288,7 @@
         |
         */
 	    public function actionButtonSelected($id_selected,$button_name) {
-	        //Your code here
-	            
+	        //Your code her
 	    }
 
 
@@ -290,8 +300,7 @@
 	    |
 	    */
 	    public function hook_query_index(&$query) {
-	        //Your code here
-	            
+	        //Your code her
 	    }
 
 	    /*
@@ -362,7 +371,6 @@
 	    */
 	    public function hook_before_delete($id) {
 	        //Your code here
-
 	    }
 
 	    /* 
@@ -374,7 +382,6 @@
 	    */
 	    public function hook_after_delete($id) {
 	        //Your code here
-
 	    }
 
 
