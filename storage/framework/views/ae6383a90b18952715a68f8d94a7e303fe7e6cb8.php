@@ -147,7 +147,8 @@
                                 <i class="fa fa-star" aria-hidden="true"></i>
                                 </span>
                             </div>
-                            <div class="price"><span>$ <?php echo $tour->sell_price; ?></span>$ <?php echo $tour->sell_price-$tour->discount; ?></div>
+                            <?php $tourPrice =  \App\Helpers\Helper::tourPrice($tour->id);    ?>
+                            <div class="price">$ <?php echo $tourPrice[0]->price; ?></div>
                             <div class="clearfix"></div>
                         </div>
                     </div>

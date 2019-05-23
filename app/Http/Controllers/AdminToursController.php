@@ -1,13 +1,13 @@
 <?php namespace App\Http\Controllers;
 
-	use App\Country;
-    use App\TourCategory;
-    use App\TravelerType;
-    use Illuminate\Support\Facades\Input;
+	use Illuminate\Support\Facades\Input;
     use Session;
 	use Request;
 	use DB;
 	use CRUDBooster;
+	use App\TourCategory;
+	use App\Country;
+	use App\TravelerType;
 
 	class AdminToursController extends \crocodicstudio\crudbooster\controllers\CBController {
 
@@ -17,7 +17,7 @@
 			$this->title_field = "title";
 			$this->limit = "20";
 			$this->orderby = "id,desc";
-			$this->global_privilege = true;
+			$this->global_privilege = false;
 			$this->button_table_action = true;
 			$this->button_bulk_action = true;
 			$this->button_action_style = "button_icon";
@@ -34,65 +34,66 @@
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
-			$this->col[] = ["label"=>"Cover Image","name"=>"images","image"=>true];
+			$this->col[] = ["label"=>"Images","name"=>"images","image"=>true];
 			$this->col[] = ["label"=>"Tour Code","name"=>"tour_code"];
+			$this->col[] = ["label"=>"Category","name"=>"category_id","join"=>"tour_categories,id"];
 			$this->col[] = ["label"=>"Title","name"=>"title"];
-			$this->col[] = ["label"=>"Category","name"=>"category_id","join"=>"tour_categories,category_name"];
-			$this->col[] = ["label"=>"Tour From","name"=>"tour_from"];
-			$this->col[] = ["label"=>"Tour Location","name"=>"tour_location"];
-			$this->col[] = ["label"=>"Sell Price","name"=>"sell_price"];
-			$this->col[] = ["label"=>"Discount","name"=>"discount"];
-			$this->col[] = ["label"=>"Status","name"=>"status"];
+			$this->col[] = ["label"=>"Location","name"=>"location"];
+			$this->col[] = ["label"=>"Attractions","name"=>"attractions"];
+			$this->col[] = ["label"=>"Province","name"=>"province","join"=>"regions,id"];
+			$this->col[] = ["label"=>"Country","name"=>"country","join"=>"countries,id"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
 			$this->form[] = ['label'=>'Tour Code','name'=>'tour_code','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Category Id','name'=>'category_id','type'=>'select2','validation'=>'required|integer|min:0','width'=>'col-sm-10','datatable'=>'tour_categories,category_name'];
+			$this->form[] = ['label'=>'Category','name'=>'category_id','type'=>'select2','validation'=>'required|integer|min:0','width'=>'col-sm-10','datatable'=>'tour_categories,category_name'];
 			$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-10','placeholder'=>'You can only enter the letter only'];
-			$this->form[] = ['label'=>'Tour From','name'=>'tour_from','type'=>'googlemaps','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Tour Location','name'=>'tour_location','type'=>'googlemaps','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Slug','name'=>'slug','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Location','name'=>'location','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
 			$this->form[] = ['label'=>'Attractions','name'=>'attractions','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Country','name'=>'country','type'=>'select','validation'=>'required','width'=>'col-sm-9','datatable'=>'countries,name'];
-			$this->form[] = ['label'=>'Province','name'=>'province','type'=>'select','validation'=>'required','width'=>'col-sm-9','datatable'=>'regions,name'];
+			$this->form[] = ['label'=>'Country','name'=>'country','type'=>'select2','validation'=>'required|integer|min:0','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Province','name'=>'province','type'=>'number','validation'=>'required|integer|min:0','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Departure Time','name'=>'departure_time','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Departure Point','name'=>'departure_point','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Return Point','name'=>'return_point','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Return Time','name'=>'return_time','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
 			$this->form[] = ['label'=>'Tour Duration','name'=>'tour_duration','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Sell Price','name'=>'sell_price','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
 			$this->form[] = ['label'=>'Discount','name'=>'discount','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Overview','name'=>'overview','type'=>'wysiwyg','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Itinerary','name'=>'itinerary','type'=>'wysiwyg','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Departure Return Location','name'=>'departure_return_location','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Departure Time','name'=>'departure_time','type'=>'time','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Price Includes','name'=>'price_includes','type'=>'text','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Price Excludes','name'=>'price_excludes','type'=>'text','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Overview','name'=>'overview','type'=>'textarea','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Itinerary','name'=>'itinerary','type'=>'textarea','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Price Includes','name'=>'price_includes','type'=>'textarea','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Price Excludes','name'=>'price_excludes','type'=>'textarea','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
 			$this->form[] = ['label'=>'Complementaries','name'=>'complementaries','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Images','name'=>'images','type'=>'upload','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Departure Point','name'=>'departure_point','type'=>'text','validation'=>'required','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Return_location','name'=>'departure_return_location','type'=>'text','validation'=>'required','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Status','name'=>'status','type'=>'radio','validation'=>'required','width'=>'col-sm-9','dataenum'=>'1|Active;0|inactive'];
+			$this->form[] = ['label'=>'Status','name'=>'status','type'=>'number','validation'=>'required|integer|min:0','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Visit','name'=>'visit','type'=>'number','validation'=>'required|integer|min:0','width'=>'col-sm-10'];
+			$this->form[] = ['label'=>'Images','name'=>'images','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
 			//$this->form = [];
-			//$this->form[] = ['label'=>'Tour Code','name'=>'tour_code','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Category Id','name'=>'category_id','type'=>'select2','validation'=>'required|integer|min:0','width'=>'col-sm-10','datatable'=>'tour_categories,category_name'];
-			//$this->form[] = ['label'=>'Title','name'=>'title','type'=>'text','validation'=>'required|string|min:3|max:70','width'=>'col-sm-10','placeholder'=>'You can only enter the letter only'];
-			//$this->form[] = ['label'=>'Tour From','name'=>'tour_from','type'=>'googlemaps','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Tour Location','name'=>'tour_location','type'=>'googlemaps','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Attractions','name'=>'attractions','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Country','name'=>'country','type'=>'select','validation'=>'required','width'=>'col-sm-9','datatable'=>'countries,name'];
-			//$this->form[] = ['label'=>'Province','name'=>'province','type'=>'select','validation'=>'required','width'=>'col-sm-9','datatable'=>'regions,name'];
-			//$this->form[] = ['label'=>'Tour Duration','name'=>'tour_duration','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Sell Price','name'=>'sell_price','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Discount','name'=>'discount','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Overview','name'=>'overview','type'=>'wysiwyg','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Itinerary','name'=>'itinerary','type'=>'wysiwyg','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Departure Return Location','name'=>'departure_return_location','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Departure Time','name'=>'departure_time','type'=>'time','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Price Includes','name'=>'price_includes','type'=>'text','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Price Excludes','name'=>'price_excludes','type'=>'text','validation'=>'required|string|min:5|max:5000','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Complementaries','name'=>'complementaries','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Images','name'=>'images','type'=>'upload','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Status','name'=>'status','type'=>'radio','validation'=>'required|integer|min:0','width'=>'col-sm-10','dataenum'=>'1|Active;0|Inactive'];
+			//$this->form[] = ["label"=>"Tour Code","name"=>"tour_code","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
+			//$this->form[] = ["label"=>"Category Id","name"=>"category_id","type"=>"select2","required"=>TRUE,"validation"=>"required|integer|min:0","datatable"=>"category,id"];
+			//$this->form[] = ["label"=>"Title","name"=>"title","type"=>"text","required"=>TRUE,"validation"=>"required|string|min:3|max:70","placeholder"=>"You can only enter the letter only"];
+			//$this->form[] = ["label"=>"Slug","name"=>"slug","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
+			//$this->form[] = ["label"=>"Location","name"=>"location","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
+			//$this->form[] = ["label"=>"Attractions","name"=>"attractions","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
+			//$this->form[] = ["label"=>"Country","name"=>"country","type"=>"number","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ["label"=>"Province","name"=>"province","type"=>"number","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ["label"=>"Departure Time","name"=>"departure_time","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
+			//$this->form[] = ["label"=>"Departure Point","name"=>"departure_point","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
+			//$this->form[] = ["label"=>"Return Point","name"=>"return_point","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
+			//$this->form[] = ["label"=>"Return Time","name"=>"return_time","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
+			//$this->form[] = ["label"=>"Tour Duration","name"=>"tour_duration","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
+			//$this->form[] = ["label"=>"Discount","name"=>"discount","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
+			//$this->form[] = ["label"=>"Overview","name"=>"overview","type"=>"textarea","required"=>TRUE,"validation"=>"required|string|min:5|max:5000"];
+			//$this->form[] = ["label"=>"Itinerary","name"=>"itinerary","type"=>"textarea","required"=>TRUE,"validation"=>"required|string|min:5|max:5000"];
+			//$this->form[] = ["label"=>"Price Includes","name"=>"price_includes","type"=>"textarea","required"=>TRUE,"validation"=>"required|string|min:5|max:5000"];
+			//$this->form[] = ["label"=>"Price Excludes","name"=>"price_excludes","type"=>"textarea","required"=>TRUE,"validation"=>"required|string|min:5|max:5000"];
+			//$this->form[] = ["label"=>"Complementaries","name"=>"complementaries","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
+			//$this->form[] = ["label"=>"Status","name"=>"status","type"=>"number","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ["label"=>"Visit","name"=>"visit","type"=>"number","required"=>TRUE,"validation"=>"required|integer|min:0"];
+			//$this->form[] = ["label"=>"Images","name"=>"images","type"=>"text","required"=>TRUE,"validation"=>"required|min:1|max:255"];
 			# OLD END FORM
 
 			/* 
@@ -267,28 +268,21 @@
             $data['countries'] = Country::pluck('name','id');
             $data['travelerType']= TravelerType::all();
             $this->cbView('backend.tour.create',$data);
+
         }
 
 
-        public function AddSave(Request $request)
-        {
-            echo "<pre>";
-            print_r(Input::all());
-            echo "</pre>";
-            exit;
-        }
-
-
-        /*
-        | ----------------------------------------------------------------------
-        | Hook for button selected
-        | ----------------------------------------------------------------------
-        | @id_selected = the id selected
-        | @button_name = the name of button
-        |
-        */
+	    /*
+	    | ---------------------------------------------------------------------- 
+	    | Hook for button selected
+	    | ---------------------------------------------------------------------- 
+	    | @id_selected = the id selected
+	    | @button_name = the name of button
+	    |
+	    */
 	    public function actionButtonSelected($id_selected,$button_name) {
-	        //Your code her
+	        //Your code here
+	            
 	    }
 
 
@@ -300,7 +294,8 @@
 	    |
 	    */
 	    public function hook_query_index(&$query) {
-	        //Your code her
+	        //Your code here
+	            
 	    }
 
 	    /*
@@ -320,8 +315,9 @@
 	    | @arr
 	    |
 	    */
-	    public function hook_before_add(&$postdata) {        
-	        //Your code here
+	    public function hook_before_add(&$postdata) {
+
+
 
 	    }
 
@@ -371,6 +367,7 @@
 	    */
 	    public function hook_before_delete($id) {
 	        //Your code here
+
 	    }
 
 	    /* 
@@ -382,6 +379,7 @@
 	    */
 	    public function hook_after_delete($id) {
 	        //Your code here
+
 	    }
 
 

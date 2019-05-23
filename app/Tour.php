@@ -23,6 +23,10 @@ class Tour extends Model
     }
 
     public function  tourPrice() {
-        return $this->hasMany('App\TourPrice','id','tour_id');
+
+        return $tourPrice = TourPrice::join('traveler_types','tour_prices.traveler_type_id','traveler_types.id')
+            ->get();
+
+
     }
 }

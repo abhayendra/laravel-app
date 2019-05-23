@@ -31,20 +31,22 @@
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];
 			$this->col[] = ["label"=>"Category Name","name"=>"category_name"];
+			$this->col[] = ["label"=>"Parent Category","name"=>"parent_id","join"=>"tour_categories,category_name"];
 			$this->col[] = ["label"=>"Status","name"=>"status","callback"=>function($row) {  if($row->status==1) { return "Active"; } else { return "Inactive"; }}];
-			$this->col[] = ["label"=>"Created","name"=>"created_at"];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE
 			$this->form = [];
+			$this->form[] = ['label'=>'Parent Category','name'=>'parent_id','type'=>'select2','validation'=>'required|integer|min:0','width'=>'col-sm-10','datatable'=>'tour_categories,category_name'];
 			$this->form[] = ['label'=>'Category Name','name'=>'category_name','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			$this->form[] = ['label'=>'Status','name'=>'status','type'=>'radio','validation'=>'required|integer|min:0','width'=>'col-sm-10','dataenum'=>'1|Active;2|Inactive'];
+			$this->form[] = ['label'=>'Status','name'=>'status','type'=>'radio','validation'=>'required|integer|min:0','width'=>'col-sm-10','dataenum'=>'0|Inactive;1|Active'];
 			# END FORM DO NOT REMOVE THIS LINE
 
 			# OLD START FORM
 			//$this->form = [];
+			//$this->form[] = ['label'=>'Parent Category','name'=>'parent_id','type'=>'select2','validation'=>'required|integer|min:0','width'=>'col-sm-10','datatable'=>'tour_categories,id'];
 			//$this->form[] = ['label'=>'Category Name','name'=>'category_name','type'=>'text','validation'=>'required|min:1|max:255','width'=>'col-sm-10'];
-			//$this->form[] = ['label'=>'Status','name'=>'status','type'=>'radio','validation'=>'required|integer|min:0','width'=>'col-sm-10','dataenum'=>'1|Active;2|Inactive'];
+			//$this->form[] = ['label'=>'Status','name'=>'status','type'=>'radio','validation'=>'required|integer|min:0','width'=>'col-sm-10','dataenum'=>'0|Inactive;1|Active'];
 			# OLD END FORM
 
 			/* 
@@ -60,7 +62,6 @@
 	        | 
 	        */
 	        $this->sub_module = array();
-            $this->sub_module[] = ['label'=>'Images','path'=>'image','parent_columns'=>'image,alt','foreign_key'=>'tour_id','button_color'=>'success','button_icon'=>'fa fa-bars'];
 
 
 	        /* 
@@ -75,21 +76,18 @@
 	        | 
 	        */
 	        $this->addaction = array();
-            $this->addaction[] = ['label'=>'Set Active','url'=>CRUDBooster::mainpath('set-status/1/[id]'),'icon'=>'fa fa-check','color'=>'success','showIf'=>"[status] == '0'"];
-            $this->addaction[] = ['label'=>'Set Pending','url'=>CRUDBooster::mainpath('set-status/0/[id]'),'icon'=>'fa fa-ban','color'=>'warning','showIf'=>"[status] == '1'", 'confirmation' => true];
 
 
-
-            /*
-            | ----------------------------------------------------------------------
-            | Add More Button Selected
-            | ----------------------------------------------------------------------
-            | @label       = Label of action
-            | @icon 	   = Icon from fontawesome
-            | @name 	   = Name of button
-            | Then about the action, you should code at actionButtonSelected method
-            |
-            */
+	        /* 
+	        | ---------------------------------------------------------------------- 
+	        | Add More Button Selected
+	        | ----------------------------------------------------------------------     
+	        | @label       = Label of action 
+	        | @icon 	   = Icon from fontawesome
+	        | @name 	   = Name of button 
+	        | Then about the action, you should code at actionButtonSelected method 
+	        | 
+	        */
 	        $this->button_selected = array();
 
 	                
@@ -211,14 +209,6 @@
 	        
 	        
 	    }
-
-
-
-        public function getSetStatus($status,$id) {
-            DB::table('tour_categories')->where('id',$id)->update(['status'=>$status]);
-            //This will redirect back and gives a message
-            CRUDBooster::redirect($_SERVER['HTTP_REFERER'],"The status product has been updated !","info");
-        }
 
 
 	    /*
