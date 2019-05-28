@@ -24,9 +24,7 @@ class Tour extends Model
 
     public function  tourPrice() {
 
-        return $tourPrice = TourPrice::join('traveler_types','tour_prices.traveler_type_id','traveler_types.id')
-            ->get();
-
+        return $this->hasMany('App\TourPrice','tour_id');
 
     }
 }

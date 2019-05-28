@@ -66,17 +66,18 @@
                             <?php //print_r($singleTour); die();  ?>
                             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                 <div class="tour_box">
-                                    <a href="#">{!! Html::image('resources/assets/images/calgary.jpg','',['class'=>'img-res']) !!}</a>
+                                    <a href="#">{!! Html::image('public/'.$singleTour['images'].'?w=400&h=250&fit=crop-center','',['class'=>'img-res']) !!}</a>
                                     <div class="tour_title"><a href="{!! url('/tour/'.$singleTour['slug']) !!}">{!! @$singleTour['title'] !!}</a></div>
                                     <div class="rating">
                                         <i class="fa fa-star" aria-hidden="true"></i>
                                         <i class="fa fa-star" aria-hidden="true"></i>
                                         <i class="fa fa-star" aria-hidden="true"></i>
                                         <i class="fa fa-star" aria-hidden="true"></i>
-                                        <i class="fa fa-star" aria-hidden="true"></i> (21)
+                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                        (0 Reviews)
                                     </div>
                                     <div class="list_detail">
-                                        From: <a href="#">{!! $singleTour['tour_from'] !!}</a><br>
+                                        From: <a href="#">{!! $singleTour['departure_point'] !!}</a><br>
                                         Duration: {!! $singleTour['tour_duration'] !!}<br>
                                         Tour Code: {!! $singleTour['tour_code'] !!}
                                     </div>
@@ -104,8 +105,6 @@
                         </div>
                     </div>
                 </div>
-
-
               <div class="more_things">
                     <h2>More Things to Do in {!! urldecode($keyword) !!}  & Around</h2>
                     <a href="{!! url('location/niagara') !!}"> Niagara  </a>

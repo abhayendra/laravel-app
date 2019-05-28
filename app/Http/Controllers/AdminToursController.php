@@ -109,8 +109,6 @@
 	        $this->sub_module[] = ['label'=>'Image Gallery','path'=>'tour_pictures','parent_columns'=>'title','foreign_key'=>'tour_id','button_color'=>'success','button_icon'=>'fa fa-picture-o'];
             $this->sub_module[] = ['label'=>'Prices','path'=>'tour_pictures','parent_columns'=>'title','foreign_key'=>'tour_id','button_color'=>'success','button_icon'=>'fa fa-bars'];
 
-
-
 	        /* 
 	        | ---------------------------------------------------------------------- 
 	        | Add More Action Button / Menu

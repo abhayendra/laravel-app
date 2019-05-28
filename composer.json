@@ -10,10 +10,13 @@
         "darryldecode/cart": "~4.0",
         "fideloper/proxy": "~3.3",
         "hisorange/browser-detect": "^3.1",
+        "intervention/image": "^2.4",
         "laravel/framework": "5.5.*",
         "laravel/socialite": "^3.0",
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.4.0",
+        "league/glide-laravel": "^1.0",
+        "shawnsandy/img-fly": "^0.1.21",
         "stevebauman/location": "^3.0",
         "submtd/social-login": "^1.0"
     },

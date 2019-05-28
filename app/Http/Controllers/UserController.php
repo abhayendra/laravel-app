@@ -18,7 +18,7 @@ class UserController extends Controller
     public function dashboard() {
         $user = User::where('id',Auth::user()->id)->first();
         $orders = Order::join('tours','tours.id','orders.tour_id')->where('user_id',Auth::user()->id)->get();
-        return view('frontend.user.dashboard',compact(['user','orders']));
+        return view('frontend.user.dashboard',compact(['user','orders'])); 
     }
 
 

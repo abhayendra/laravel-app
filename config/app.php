@@ -181,6 +181,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         crocodicstudio\crudbooster\CRUDBoosterServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
+        ShawnSandy\ImgFly\ImgflyServiceProvider::class,
 
     ],
 
@@ -233,6 +235,8 @@ return [
         'Cart' => Darryldecode\Cart\Facades\CartFacade::class,
         'Browser' => \hisorange\BrowserDetect\Facade::class,
         'Location' => Stevebauman\Location\Facades\Location::class,
+        'Image' => Intervention\Image\Facades\Image::class,
+        "Imgfly" => ShawnSandy\ImgFly\Classes\ImgflyFacade::class,
 
     ],
 

@@ -15,20 +15,30 @@ class AjaxController extends Controller
 {
     public function searchResult(Request $request) {
 
-        $tourLocation = Tour::where('tour_location','like',"%".$request->keyword."%")->get();
-        $tourtitle = Tour::where('title','like',"%".$request->keyword."%")->get();
-        $tourAttractions = Tour::where('attractions','like',"%".$request->keyword."%")->get();
+        $tourLocation = Tour::where('location','like',"%".$request->keyword."%")
+            ->groupBy('location')
+            ->get();
+
+        $tourtitle = Tour::join('tour_prices','tours.id','tour_prices.tour_id')
+            ->where('title','like',"%".$request->keyword."%")
+            ->groupBy('tours.id')
+            ->get();
+
+        $tourAttractions = Tour::where('attractions','like',"%".$request->keyword."%")
+            ->groupBy('attractions')
+            ->get();
 
         $data = "";
         $data.= "<div class=\"search_scroll\">";
         if(count($tourLocation)>0) {
             $data.= "<ul class=\"search_li marker_li\">";
             foreach($tourLocation as $location) {
-                $locationUrl = urlencode($location->tour_location);
-                $data.= "<li><a href=\"location/$locationUrl\">$location->tour_location</a></li>";
+                $locationUrl = urlencode($location->location);
+                $data.= "<li><a href=\"location/$locationUrl\">$location->location</a></li>";
             }
             $data.= "</ul>";
         }
+
         if(count($tourAttractions)>0) {
             $data.= "<ul class=\"search_li star_li\">";
             foreach($tourAttractions as $attractions) {
@@ -41,25 +51,23 @@ class AjaxController extends Controller
         if(count($tourtitle)>0) {
             $data.= "<ul class=\"search_li img_li\">";
             foreach($tourtitle as $title) {
-                $data.= "<li><a href=\"tour/$title->slug\"><img src=\"http://booktours.ca/resources/assets/images/alberta.jpg\" alt=\"\"> $title->title
-                    <div>$ $title->sell_price USD per person </div > 
-                    <div class=\"clearfix\" ></div >
-                    </a >
-                    </li >";
+                $url = url('/public/'.$title->images)."?w=75&h=50&fit=crop-center";
+                $data.= "<li><a href=\"tour/$title->slug\"><img src=\"$url\" alt=\"$title->title\"> $title->title
+                    <div> From $ $title->price USD per person </div > 
+                    <div class=\"clearfix\" ></div>
+                    </a>
+                    </li>";
             }
             $data.= "</ul>";
         }
-
         $data.= "</div>
                  <div class=\"more_result\">
-                  <a href=\"url(/)\"><i class=\"fa fa-search\"></i> Find more results for niagara </a>
+                  <a href=\"/tours/?s=$request->keyword\"><i class=\"fa fa-search\"></i> Find more results for niagara </a>
                 </div>";
-
         echo $data;
     }
 
     public function clienLog() {
-
         if(Browser::isMobile()) {
             $platefrom = "Mobile";
         } elseif(Browser::isTablet()) {
@@ -71,7 +79,6 @@ class AjaxController extends Controller
         } else {
             $platefrom = "Other";
         }
-
         if(Auth::check())
         {
             $user_id =  Auth::user()->id;

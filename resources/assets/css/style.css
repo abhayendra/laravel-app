@@ -27,9 +27,9 @@
 .box{ box-shadow:0 0 1px #bdbdbd; margin:15px 0; transition:all ease .4s;}
 .box:hover{ box-shadow:0 5px 14px #bdbdbd;transform: scale(1.03);}
 .box_matter{ padding:12px;}
-.box_matter h4{ font-weight:600; font-size:16px; margin:0 0 5px 0; }
+.box_matter h4{ font-weight:600; font-size:16px; margin:0 0 5px 0; min-height: 60px; line-height: 20px;  }
 .box_matter h4 a, .box_matter h4 a:focus{color:#006AC3;}
-.box_matter p{ font-size:14px; line-height:20px; text-align:justify; color:#676868;}
+.box_matter p{ font-size:14px; line-height:20px; text-align:justify; color:#676868; min-height: 110px; }
 .price_wra{ border-top:1px solid #e0e0e0; padding:12px;}
 
 .day{ float:left; color:#979191;}
