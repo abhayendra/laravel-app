@@ -15,11 +15,11 @@ class Tour extends Model
     }
 
     public function tourImages() {
-        return $this->hasMany('App\TourPicture','id','tour_id');
+        return $this->hasMany('App\TourPicture','tour_id');
     }
 
     public function reviews() {
-        return $this->hasMany('App\Review','id','tour_id');
+        return $this->hasMany('App\Review','tour_id');
     }
 
     public function  tourPrice() {
@@ -28,3 +28,4 @@ class Tour extends Model
 
     }
 }
+

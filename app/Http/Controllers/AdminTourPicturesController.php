@@ -32,7 +32,7 @@
 			$this->col = [];
 			$this->col[] = ["label"=>"Title","name"=>"alt_tag"];
 			$this->col[] = ["label"=>"Picture","name"=>"picture","image"=>true];
-			$this->col[] = ["label"=>"Status","name"=>"status"];
+			$this->col[] = ["label"=>"Status","name"=>"status","callback"=>function($row) {  if($row->status==1) { return "Active"; } else { return "Inactive"; }}];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE

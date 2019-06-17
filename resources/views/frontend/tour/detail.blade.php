@@ -1,6 +1,9 @@
 @extends('frontend.layout.app')
 @section('content')
-    <?php //echo "<pre>"; print_r($tour); echo "</pre>";   ?>
+     @php
+        $price = \App\Helpers\Helper::tourPrice($tour->id);
+     @endphp
+
     <!--mobile search-->
     <div class="mobile_search">
         <input name="" type="text" placeholder="Search Niagara Falls"> <span id="search_hide"><i class="fa fa-times" aria-hidden="true"></i></span>
@@ -16,9 +19,10 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb-my">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Destination</a></li>
-                    <li class="active">Toronto</li>
+                    <li><a href="{{ url('/') }}">Home</a></li>
+                    <li><a href="{!! url('/tours') !!}">Tours</a></li>
+                    @php $tourName = str_replace('-',' ',Request::segment(2)) @endphp
+                    <li class="active">{!! ucfirst(urldecode($tourName)) !!}</li>
                 </ol>
                 <div class="clearfix"></div>
             </div>
@@ -34,14 +38,11 @@
                     <div class="result_heading">{!! $tour->title !!}</div>
                     <div class="rating_row">
                            <span class="rating">
-                             <i class="fa fa-star" aria-hidden="true"></i>
-                             <i class="fa fa-star" aria-hidden="true"></i>
-                             <i class="fa fa-star" aria-hidden="true"></i>
-                             <i class="fa fa-star" aria-hidden="true"></i>
-                             <i class="fa fa-star" aria-hidden="true"></i> <a href="#">(0 Reviews)</a>
+                                @php $rating =  \App\Helpers\Helper::review($tour->id); @endphp
+                                {!! $rating !!}
                            </span>
                         <span><i class="fa fa-suitcase" aria-hidden="true"></i> Tour Code: {!! $tour->tour_code !!}</span>
-                        <span><i class="fa fa-map-marker" aria-hidden="true"></i> Location: <a href="#">{!! $tour->tour_location !!}</a></span>
+                        <span><i class="fa fa-map-marker" aria-hidden="true"></i> Location: <a href="{!! url('location/'.urldecode($tour->location)) !!}">{!! $tour->location !!}</a></span>
                         <span><i class="fa fa-clock-o" aria-hidden="true"></i> Duration: {!! $tour->tour_duration !!}</span>
                     </div>
 
@@ -49,19 +50,28 @@
                         <ul class="tab_detail">
                             <li><a href="#detail">Detail</a></li>
                             <li><a href="#expand-2">Itinerary</a></li>
+                            @if(count($tour->tourImages)>0)
                             <li><a href="#expand-3">Photos</a></li>
+                            @endif
+                            @if(count($tour->reviews)>0)
                             <li><a href="#expand-4">Reviews</a></li>
+                            @endif
                             <li><a href="#expand-5">Map</a></li>
                             <li></li>
                         </ul>
                         <div class="share">
                             <ul>
-                                <li><a href="#"><i class="fa fa-heart-o" aria-hidden="true"></i> Save</a></li>
+                                 @php $wish = \App\Helpers\Helper::showWishlist($tour->id) @endphp
+                                 @if($wish)
+                                 <li><a href="{!! url('wishlist') !!}"><i class="fa fa-heart" style="color:red" aria-hidden="true"></i> Save</a></li>
+                                @else
+                                 <li><a href="{!! url('saveWishlist/'.$tour->id) !!}"><i class="fa fa-heart" aria-hidden="true"></i> Save</a></li>
+                                @endif
                                 <li><a href="#"><i class="fa fa-share-alt" aria-hidden="true"></i> Share</a>
                                     <ul>
-                                        <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i> facebook</a></li>
-                                        <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i> twitter</a></li>
-                                        <li><a href="#"><i class="fa fa-pinterest-p" aria-hidden="true"></i> pinterest</a></li>
+                                        <li><a href="https://www.facebook.com/sharer.php?u={!! url()->current(); !!}" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i> facebook</a></li>
+                                        <li><a href="https://twitter.com/share?url={!! url()->current(); !!}&text={!! $tour->title !!}" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i> twitter</a></li>
+                                        <li><a href="https://pinterest.com/pin/create/bookmarklet/?media={!! url('/').$tour->images !!}&url={!! url()->current(); !!}&description={!! $tour->title !!}" target="_blank"><i class="fa fa-pinterest-p" aria-hidden="true"></i> pinterest</a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -69,38 +79,51 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class=""></div>
-                    <div class="price3"><span>From USD</span> $132.00</div>z
+                    <div class="price3"><span>From </span> CA$ {!! $price['0']->price !!}</div>
                     <div class="check_ava_wra">
-                        <div class="check_ava"><a href="#">Check Availability</a></div>
+                        <div class="check_ava"><a href="#" id="show1">Check Availability</a></div>
                         <div class="share2">
-                            <a href="#"><i class="fa fa-heart-o" aria-hidden="true"></i></a>
+
+                          @if($wish)
+                          <a href="{!! url('wishlist') !!}"><i class="fa fa-heart" style="color:red" aria-hidden="true"></i></a>
+                         @else
+                          <a href="{!! url('saveWishlist/'.$tour->id) !!}"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                         @endif
                             <a href="#"><i class="fa fa-share-alt" aria-hidden="true"></i></a>
                         </div>
                         <div class="clearfix"></div>
                     </div>
-                    <div class="heading3" >Overview</div>
+                    <div class="heading3">Overview <i class="fa fa-angle-down" aria-hidden="true"></i></div>
                     <div class="detail_box2">
-       <span class="more">
+
        <div class="txt">
-           <p>{!! $tour->overview !!}</p>
+           {!! $tour->overview !!}
        </div>
        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tbl2">
           <tr>
-            <td><strong>Departure & Return Location</strong></td>
-            <td>{!! $tour->departure_return_location !!}</td>
+            <td><strong>Departure Location</strong></td>
+            <td>{!! $tour->departure_point !!}</td>
           </tr>
           <tr>
             <td><strong>Departure Time</strong></td>
             <td>{!! $tour->departure_time !!}</td>
           </tr>
+           <tr>
+               <td><strong>Return Location</strong></td>
+               <td>{!! $tour->return_point !!}</td>
+           </tr>
+           <tr>
+               <td><strong>Return Time</strong></td>
+               <td>{!! $tour->return_time !!}</td>
+           </tr>
           <tr>
             <td valign="top"><strong>Price Include</strong>s</td>
             <td>
             @php $price_include = explode(',',$tour->price_includes) @endphp
-            <ul class="inc">
+                <ul class="inc">
             @foreach($price_include as $include)
-            <li>{!! $include !!}</li>
-            @endforeach
+                        <li>{!! $include !!}</li>
+                    @endforeach
             </ul>
             </td>
           </tr>
@@ -108,9 +131,9 @@
             <td valign="top"><strong>Price Excludes</strong></td>
             <td>
             @php $price_excludes = explode(',',$tour->price_excludes) @endphp
-             <ul class="inc2">
+                <ul class="inc2">
             @foreach($price_excludes as $include)
-             <li>{!! $include !!}</li>
+                <li>{!! $include !!}</li>
             @endforeach
 			</td>
           </tr>
@@ -118,39 +141,39 @@
             <td valign="top"><strong>Complementaries</strong></td>
             <td>
             @php $complementaries = explode(',',$tour->complementaries) @endphp
-            <ul class="inc">
+                <ul class="inc">
             @foreach($complementaries as $include)
-            <li>{!! $include !!}</li>
-            @endforeach
+                        <li>{!! $include !!}</li>
+                @endforeach
             </td>
           </tr>
         </table>
-        </span>
+
                     </div>
                     <div class="heading3" id="expand-2">Itinerary <i class="fa fa-angle-down" aria-hidden="true"></i></div>
                     <div class="detail_box" id="expandable-2">
                         <div class="txt">
-                           {!! $tour->itinerary !!}
+                            {!! $tour->itinerary !!}
                         </div>
                     </div>
+
+                    @if(count($tour->tourImages)>0)
                     <div class="heading3" id="expand-3">Photos <i class="fa fa-angle-down" aria-hidden="true"></i></div>
                     <div class="detail_box" id="expandable-3">
                         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                             <div class="carousel-inner" role="listbox">
-                                <div class="item active">
-                                    {!! Html::image('resources/assets/images/photo1.jpg') !!}
+                                @php $i=1; @endphp
+                                @foreach($tour->tourImages as $galleryImage)
+                                <div class="item @if($i==1) active @endif ">
+                                    {!! Html::image($galleryImage->picture,$galleryImage->alt_tag) !!}
                                     <div class="carousel-caption">
-                                        Hornblower Cruise  Tour
+                                        {!! $galleryImage->alt_tag !!}
                                     </div>
                                 </div>
-                                <div class="item">
-                                    {!! Html::image('resources/assets/images/photo2.jpg') !!}
-                                    <div class="carousel-caption">
-                                        Niagara Falls History Museum
-                                    </div>
-                                </div>
-                            </div>
+                                @php $i++;  @endphp
+                                @endforeach
 
+                            </div>
                             <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
                                 <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                                 <span class="sr-only">Previous</span>
@@ -161,58 +184,80 @@
                             </a>
                         </div>
                     </div>
+                    @endif
 
-                    @if(1>0)
-                    <div class="heading3" id="expand-4">Customer Reviews <i class="fa fa-angle-down" aria-hidden="true"></i> <span><a href="#">See all reviews</a></span>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="detail_box" id="expandable-4">
-                        <div class="review_txt">
-                            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tbl3">
-                                @foreach($tour->reviews as $review)
-                                <tr>
-                                    <td width="55" valign="top"><div class="custome_img"></div></td>
-                                    <td>
-                                        <div class="review_txt">
-                                            <div class="customer_name">Abraralvi <span class="review_time">September 2017</span></div>
-                                            <div class="rating_right">
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                                <i class="fa fa-star" aria-hidden="true"></i>
-                                            </div>
-                                            <div class="clearfix"></div>
-                                            <p>
-                                                {!! $review->review !!}
-                                            </p>
-                                        </div>
 
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </table>
+                    @if(count($tour->reviews)>0)
+                        <div class="heading3" id="expand-4">Customer Reviews <i class="fa fa-angle-down" aria-hidden="true"></i> <span><a href="#">See all reviews</a></span>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="detail_box" id="expandable-4">
+                            <div class="review_txt">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tbl3">
+                                    @foreach($tour->reviews as $review)
+                                        <tr>
+                                            <td width="55" valign="top"><div class="custome_img"></div></td>
+                                            <td>
+                                                <div class="review_txt">
+                                                    <div class="customer_name">{!! \App\Helpers\Helper::userDetail($review->user_id) !!} <span class="review_time">{!! date('D M Y',strtotime($review->created_at)) !!}</span></div>
+                                                    <div class="rating_right">
+                                                        @php $or = 5- $review->rating  @endphp
+                                                        @for($i=1; $i<=$review->rating; $i++)
+                                                        <i class="fa fa-star" aria-hidden="true"></i>
+                                                        @endfor
+                                                        @for($i=1; $i<=$or; $i++)
+                                                            <i class="fa fa-star" style="color: #ccc" aria-hidden="true"></i>
+                                                        @endfor
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <p>
+                                                        {!! $review->review !!}
+                                                    </p>
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </table>
+                            </div>
+                        </div>
+                    @endif
+                    @if(Auth::check())
+
+                    {!! Form::open(['url'=>'saveReview']) !!}
+
+                    <div class="row" id="post-review-box">
+                        <div class="col-md-12">
+                                 <input id="ratings-hidden" name="rating" type="hidden">
+                                 <input id="ratings-hidden" name="tour_id" type="hidden" value="{!! $tour->id !!}">
+                                <textarea class="form-control animated" cols="50" id="new-review" name="comment" placeholder="Enter your review here..." rows="5"></textarea>
+                                <div class="text-right">
+                                    <div class="stars starrr" data-rating="0"></div>
+                                    <button class="btn3" type="submit">Save Review</button>
+                                </div>
                         </div>
                     </div>
+                    {!! Form::close()  !!}
+
                     @endif
                     <div class="heading3" id="expand-5">Location <i class="fa fa-angle-down" aria-hidden="true"></i></div>
                     <div class="detail_box" id="expandable-5">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d186586.22995069515!2d-79.22811823021638!3d43.05384707400628!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d3445eec824db9%3A0x46d2c56156bda288!2sNiagara+Falls%2C+ON%2C+Canada!5e0!3m2!1sen!2sin!4v1510668358698" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+                        <iframe src="https://www.google.com/maps?q={!! urlencode($tour->location) !!}&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
                     </div>
                 </div>
+
                 {!! Form::open(['url'=>'order/checkout']) !!}
                 <input type="hidden" name="tour_id" value="{!! $tour->id !!}">
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                     @if($errors->any())
-                            @foreach($errors as $error)
-                                @php echo "<pre>";  print_r($error) @endphp
-                            @endforeach
+                        @foreach($errors as $error)
+                            @php echo "<pre>";  print_r($error) @endphp
+                        @endforeach
                     @endif
                     <div class="book_right_wra" data-spy="affix" data-offset-top="497">
                         <div class="price_box">
-                            From CAD
-                            <span><small>CA$</small>{!!  $tour->sell_price - $tour->discount !!}</span>
-                            <i>CA$ {!! $tour->sell_price !!}</i> <strong>Save  CA$ {!! $tour->discount !!}</strong>
+                            From
+                            <span><small>CA$</small>{!!  $price[0]->price !!}</span>
                         </div>
                         <div class="booking_box">
                             <h3>Book the tour</h3>
@@ -227,34 +272,31 @@
                                         </div>
                                     </td>
                                 </tr>
-                                @foreach($tour->tourPrice as $price)
-                                <tr>
-                                    <td>
-                                        <label>{!! $price->type !!} ( CA$ {!! $price->prices !!} )</label>
-                                        <div class="input-group">
+                                @foreach($price as $price)
+                                    <tr>
+                                        <td>
+                                            <label>{!! $price->name !!} {!! $price->age_group !!} ( CA$ {!! $price->price !!} )</label>
+                                            <div class="input-group">
                                           <span class="input-group-btn">
-                                              <button type="button" class="btn btn-default btn-number" disabled="disabled" data-type="minus" data-field="travelers[{!! $price->type !!}]">
+                                              <button type="button" class="btn btn-default btn-number" disabled="disabled" data-type="minus" data-field="travelers[{!! $price->name !!}]">
                                                   <span class="glyphicon glyphicon-minus"></span>
                                               </button>
                                           </span>
 
-                                          <input type="text" name="travelers[{!! $price->type !!}]" class="form-control input-number" value="{!! $price->min !!}" min="{!! $price->min !!}" max="{!! $price->max !!}">
+                                                <input type="text" name="travelers[{!! $price->name !!}]" class="form-control input-number" value="{!! $price->min !!}" min="{!! $price->min !!}" max="{!! $price->max !!}">
 
-                                          <span class="input-group-btn">
-                                              <button type="button" class="btn btn-default btn-number" data-type="plus" data-field="travelers[{!! $price->type !!}]">
+                                                <span class="input-group-btn">
+                                              <button type="button" class="btn btn-default btn-number" data-type="plus" data-field="travelers[{!! $price->name !!}]">
                                                   <span class="glyphicon glyphicon-plus"></span>
                                               </button>
                                           </span>
-                                        </div>
-                                    </td>
-                                </tr>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 @endforeach
-
                                 <tr>
                                     <td colspan="2"><button type="submit" class="btn3">Proceed Booking</button></td>
                                 </tr>
-
-
                             </table>
                         </div>
                     </div>
@@ -264,6 +306,71 @@
         </div>
     </div>
     <!--end listing-->
+    @php
+       $bookingPrice = \App\Helpers\Helper::tourPrice($tour->id);
+    @endphp
+    <div class="available_mob">
+        <h2>Book the tour <span id="close1">x</span></h2>
+        {!! Form::open(['url'=>'order/checkout']) !!}
+        <input type="hidden" name="tour_id" value="{!! $tour->id !!}">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            @if($errors->any())
+                @foreach($errors as $error)
+                    @php echo "<pre>";  print_r($error) @endphp
+                @endforeach
+            @endif
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tbl">
+                        <tr>
+                            <td colspan="2">
+                                <div class='input-group date date2' id='datetimepicker1'>
+                                    <input type='text' name="date_of_booking" autocomplete="off" class="fo rm-control" placeholder="Date Of Booking " id="date_of_booking"  required/>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                        @foreach($bookingPrice as $p)
+                                    <tr>
+                                        <td>
+                                            <label>{!! $p->name !!} {!! $p->age_group !!} ( CA$ {!! $p->price !!} )</label>
+                                            <div class="input-group">
+                                          <span class="input-group-btn">
+                                              <button type="button" class="btn btn-default btn-number" disabled="disabled" data-type="minus" data-field="travelers[{!! $p->name !!}]">
+                                                  <span class="glyphicon glyphicon-minus"></span>
+                                              </button>
+                                          </span>
+
+                                                <input type="text" name="travelers[{!! $p->name !!}]" class="form-control input-number" value="{!! $price->min !!}" min="{!! $price->min !!}" max="{!! $price->max !!}">
+
+                                                <span class="input-group-btn">
+                                              <button type="button" class="btn btn-default btn-number" data-type="plus" data-field="travelers[{!! $p->name !!}]">
+                                                  <span class="glyphicon glyphicon-plus"></span>
+                                              </button>
+                                          </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                        <tr>
+                            <td colspan="2"><button type="submit" class="btn3">Proceed Booking</button></td>
+                        </tr>
+                    </table>
+
+        </div>
+        {!! Form::close() !!}
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            $("#close1").click(function(){
+                $(".available_mob").hide();
+            });
+            $("#show1").click(function(){
+                $(".available_mob").show();
+            });
+        });
+    </script>
 
     <script>
         $(window).load(function() {
@@ -347,5 +454,67 @@
             }
         });
 
+    </script>
+    <script>
+        $( function() {
+            $( "#date_of_booking" ).datepicker({
+                changeMonth: true,
+                changeYear: true,
+                minDate: 0
+            });
+        } );
+    </script>
+    <style>
+        .animated {
+            -webkit-transition: height 0.2s;
+            -moz-transition: height 0.2s;
+            transition: height 0.2s;
+        }
+
+        .stars
+        {
+            margin: 20px 0;
+            font-size: 24px;
+            color: #d17581;
+        }
+    </style>
+    <script>
+        (function(e){var t,o={className:"autosizejs",append:"",callback:!1,resizeDelay:10},i='<textarea tabindex="-1" style="position:absolute; top:-999px; left:0; right:auto; bottom:auto; border:0; padding: 0; -moz-box-sizing:content-box; -webkit-box-sizing:content-box; box-sizing:content-box; word-wrap:break-word; height:0 !important; min-height:0 !important; overflow:hidden; transition:none; -webkit-transition:none; -moz-transition:none;"/>',n=["fontFamily","fontSize","fontWeight","fontStyle","letterSpacing","textTransform","wordSpacing","textIndent"],s=e(i).data("autosize",!0)[0];s.style.lineHeight="99px","99px"===e(s).css("lineHeight")&&n.push("lineHeight"),s.style.lineHeight="",e.fn.autosize=function(i){return this.length?(i=e.extend({},o,i||{}),s.parentNode!==document.body&&e(document.body).append(s),this.each(function(){function o(){var t,o;"getComputedStyle"in window?(t=window.getComputedStyle(u,null),o=u.getBoundingClientRect().width,e.each(["paddingLeft","paddingRight","borderLeftWidth","borderRightWidth"],function(e,i){o-=parseInt(t[i],10)}),s.style.width=o+"px"):s.style.width=Math.max(p.width(),0)+"px"}function a(){var a={};if(t=u,s.className=i.className,d=parseInt(p.css("maxHeight"),10),e.each(n,function(e,t){a[t]=p.css(t)}),e(s).css(a),o(),window.chrome){var r=u.style.width;u.style.width="0px",u.offsetWidth,u.style.width=r}}function r(){var e,n;t!==u?a():o(),s.value=u.value+i.append,s.style.overflowY=u.style.overflowY,n=parseInt(u.style.height,10),s.scrollTop=0,s.scrollTop=9e4,e=s.scrollTop,d&&e>d?(u.style.overflowY="scroll",e=d):(u.style.overflowY="hidden",c>e&&(e=c)),e+=w,n!==e&&(u.style.height=e+"px",f&&i.callback.call(u,u))}function l(){clearTimeout(h),h=setTimeout(function(){var e=p.width();e!==g&&(g=e,r())},parseInt(i.resizeDelay,10))}var d,c,h,u=this,p=e(u),w=0,f=e.isFunction(i.callback),z={height:u.style.height,overflow:u.style.overflow,overflowY:u.style.overflowY,wordWrap:u.style.wordWrap,resize:u.style.resize},g=p.width();p.data("autosize")||(p.data("autosize",!0),("border-box"===p.css("box-sizing")||"border-box"===p.css("-moz-box-sizing")||"border-box"===p.css("-webkit-box-sizing"))&&(w=p.outerHeight()-p.height()),c=Math.max(parseInt(p.css("minHeight"),10)-w||0,p.height()),p.css({overflow:"hidden",overflowY:"hidden",wordWrap:"break-word",resize:"none"===p.css("resize")||"vertical"===p.css("resize")?"none":"horizontal"}),"onpropertychange"in u?"oninput"in u?p.on("input.autosize keyup.autosize",r):p.on("propertychange.autosize",function(){"value"===event.propertyName&&r()}):p.on("input.autosize",r),i.resizeDelay!==!1&&e(window).on("resize.autosize",l),p.on("autosize.resize",r),p.on("autosize.resizeIncludeStyle",function(){t=null,r()}),p.on("autosize.destroy",function(){t=null,clearTimeout(h),e(window).off("resize",l),p.off("autosize").off(".autosize").css(z).removeData("autosize")}),r())})):this}})(window.jQuery||window.$);
+        var __slice=[].slice;(function(e,t){var n;n=function(){function t(t,n){var r,i,s,o=this;this.options=e.extend({},this.defaults,n);this.$el=t;s=this.defaults;for(r in s){i=s[r];if(this.$el.data(r)!=null){this.options[r]=this.$el.data(r)}}this.createStars();this.syncRating();this.$el.on("mouseover.starrr","span",function(e){return o.syncRating(o.$el.find("span").index(e.currentTarget)+1)});this.$el.on("mouseout.starrr",function(){return o.syncRating()});this.$el.on("click.starrr","span",function(e){return o.setRating(o.$el.find("span").index(e.currentTarget)+1)});this.$el.on("starrr:change",this.options.change)}t.prototype.defaults={rating:void 0,numStars:5,change:function(e,t){}};t.prototype.createStars=function(){var e,t,n;n=[];for(e=1,t=this.options.numStars;1<=t?e<=t:e>=t;1<=t?e++:e--){n.push(this.$el.append("<span class='glyphicon .glyphicon-star-empty'></span>"))}return n};t.prototype.setRating=function(e){if(this.options.rating===e){e=void 0}this.options.rating=e;this.syncRating();return this.$el.trigger("starrr:change",e)};t.prototype.syncRating=function(e){var t,n,r,i;e||(e=this.options.rating);if(e){for(t=n=0,i=e-1;0<=i?n<=i:n>=i;t=0<=i?++n:--n){this.$el.find("span").eq(t).removeClass("glyphicon-star-empty").addClass("glyphicon-star")}}if(e&&e<5){for(t=r=e;e<=4?r<=4:r>=4;t=e<=4?++r:--r){this.$el.find("span").eq(t).removeClass("glyphicon-star").addClass("glyphicon-star-empty")}}if(!e){return this.$el.find("span").removeClass("glyphicon-star").addClass("glyphicon-star-empty")}};return t}();return e.fn.extend({starrr:function(){var t,r;r=arguments[0],t=2<=arguments.length?__slice.call(arguments,1):[];return this.each(function(){var i;i=e(this).data("star-rating");if(!i){e(this).data("star-rating",i=new n(e(this),r))}if(typeof r==="string"){return i[r].apply(i,t)}})}})})(window.jQuery,window);$(function(){return $(".starrr").starrr()})
+        $(function(){
+            $('#new-review').autosize({append: "\n"});
+            var reviewBox = $('#post-review-box');
+            var newReview = $('#new-review');
+            var openReviewBtn = $('#open-review-box');
+            var closeReviewBtn = $('#close-review-box');
+            var ratingsField = $('#ratings-hidden');
+
+            openReviewBtn.click(function(e)
+            {
+                reviewBox.slideDown(400, function()
+                {
+                    $('#new-review').trigger('autosize.resize');
+                    newReview.focus();
+                });
+                openReviewBtn.fadeOut(100);
+                closeReviewBtn.show();
+            });
+
+            closeReviewBtn.click(function(e)
+            {
+                e.preventDefault();
+                reviewBox.slideUp(300, function()
+                {
+                    newReview.focus();
+                    openReviewBtn.fadeIn(200);
+                });
+                closeReviewBtn.hide();
+
+            });
+
+            $('.starrr').on('starrr:change', function(e, value){
+                ratingsField.val(value);
+            });
+        });
     </script>
 @endsection

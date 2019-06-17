@@ -33,7 +33,7 @@
 			$this->col[] = ["label"=>"Tour Id","name"=>"tour_id","join"=>"tours,title"];
 			$this->col[] = ["label"=>"User Id","name"=>"user_id","join"=>"cms_users,name"];
 			$this->col[] = ["label"=>"Rating","name"=>"rating"];
-			$this->col[] = ["label"=>"Status","name"=>"status"];
+			$this->col[] = ["label"=>"Status","name"=>"status","callback"=>function($row) {  if($row->status==1) { return "Active"; } else { return "Inactive"; }}];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE

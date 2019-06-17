@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Country;
+use App\Region;
 use App\Tour;
 use App\UserLog;
 use Browser;
@@ -34,7 +35,7 @@ class AjaxController extends Controller
             $data.= "<ul class=\"search_li marker_li\">";
             foreach($tourLocation as $location) {
                 $locationUrl = urlencode($location->location);
-                $data.= "<li><a href=\"location/$locationUrl\">$location->location</a></li>";
+                $data.= "<li><a href=\"/location/$locationUrl\">$location->location</a></li>";
             }
             $data.= "</ul>";
         }
@@ -43,7 +44,7 @@ class AjaxController extends Controller
             $data.= "<ul class=\"search_li star_li\">";
             foreach($tourAttractions as $attractions) {
                 $attractionsUrl = urlencode($attractions->attractions);
-                $data.= "<li><a href=\"attractions/$attractionsUrl\">$attractions->attractions</a></li>";
+                $data.= "<li><a href=\"/attractions/$attractionsUrl\">$attractions->attractions</a></li>";
             }
             $data.= "</ul>";
         }
@@ -52,7 +53,7 @@ class AjaxController extends Controller
             $data.= "<ul class=\"search_li img_li\">";
             foreach($tourtitle as $title) {
                 $url = url('/public/'.$title->images)."?w=75&h=50&fit=crop-center";
-                $data.= "<li><a href=\"tour/$title->slug\"><img src=\"$url\" alt=\"$title->title\"> $title->title
+                $data.= "<li><a href=\"/tour/$title->slug\"><img src=\"$url\" alt=\"$title->title\"> $title->title
                     <div> From $ $title->price USD per person </div > 
                     <div class=\"clearfix\" ></div>
                     </a>
@@ -62,7 +63,7 @@ class AjaxController extends Controller
         }
         $data.= "</div>
                  <div class=\"more_result\">
-                  <a href=\"/tours/?s=$request->keyword\"><i class=\"fa fa-search\"></i> Find more results for niagara </a>
+                  <a href=\"/tours/?search=$request->keyword\"><i class=\"fa fa-search\"></i> Find more results</a>
                 </div>";
         echo $data;
     }
@@ -107,15 +108,17 @@ class AjaxController extends Controller
 
     }
 
-
     public function country() {
-        $countryList =  Country::pluck('name','code');
+        $countryList =  Country::orderBy('name','ASC')->pluck('name','id');
         return $countryList;
     }
 
 
-    public function city($id) {
-        $cityList = City::where('id',$id)->pluck('id','name');
+    public function province() {
+        $id = $_GET['country_id'];
+        $cityList = Region::where('country_id',$id)
+            ->orderBy('name','ASC')
+            ->pluck('id','name');
         return $cityList;
     }
 

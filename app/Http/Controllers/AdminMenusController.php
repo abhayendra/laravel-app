@@ -9,7 +9,7 @@
 
 	    public function cbInit() {
 
-			# START CONFIGURATION DO NOT REMOVE THIS LINE
+			# START CONFIGURATION DO NOT REMOVE THIS LINE s
 			$this->title_field = "name";
 			$this->limit = "20";
 			$this->orderby = "id,desc";
@@ -26,7 +26,7 @@
 			$this->button_import = true;
 			$this->button_export = true;
 			$this->table = "menus";
-			# END CONFIGURATION DO NOT REMOVE THIS LINE
+			# END CONFIGURATION DO NOT REMOVE THIS LINELINE
 
 			# START COLUMNS DO NOT REMOVE THIS LINE
 			$this->col = [];

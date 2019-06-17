@@ -16,7 +16,7 @@
 .more_result a, .more_result a:focus{ background:#fedf01; color:#000; padding:8px 0; display:block; font-weight:600;}
 .more_result a:hover{ background:#006AC3; color:#fff;}
 
-.search_scroll{ max-height:300px; overflow-y:scroll;overflow-x: hidden;} 
+.search_scroll{ max-height:300px; overflow-y:scroll;overflow-x: hidden;}
 
 
 
@@ -32,21 +32,6 @@
     .reg_wra {padding: 25px 0;}
 }
 
-
-.name{ font-size:20px; font-weight:600; color:#333;}
-.name span{ font-size:13px; font-weight:normal; margin-left:10px;}
-.profile_detail{ font-size:13px; line-height:20px; font-weight:normal;}
-.edit_profile{ background:#006AC3; color:#fff; padding:4px 12px; border-radius:4px; border:none;}
-.edit_profile option{ background:#fff; color:#13A1C5; padding:5px 0 !important;}
-.tbl_name{ border-bottom:1px solid #e4e4e4; padding-bottom:15px; margin-bottom:20px;}
-.pro_detail2{ font-size:16px; border-bottom:1px solid #e4e4e4; padding-bottom:18px;}
-.pro_detail2 strong{ font-size:16px; display:block; margin-bottom:5px;}
-.collect_point{ padding:20px 0;}
-.collect_point strong{ font-size:16px; padding-right:15px; margin-right:15px; border-right:1px solid #333;}
-.collect_point a, .collect_point a:focus{ margin:0 10px; color:#006AC3;}
-.collect_point a:hover{ color:#333;}
-
-.profile_wra{ padding:40px 0; border-top:1px solid #eaeaea;}
 .contribution_wra{ border:1px solid #D2E8F7; margin:25px 0 0 0;}
 .contribution_wra h3{ font-size:18px; font-weight:600; padding:0 15px 25px 15px;}
 .contribution_wra h3 span{ font-size:12px; margin-left:5px; font-weight:300;}
@@ -58,3 +43,66 @@
 .tbl2 a:hover{ color:#333 !important;}
 
 
+.thank{ text-align:center; color:#1ca900; font-size:24px; font-weight:600; text-align:center; margin-bottom:30px;}
+.thank span{ display:block; color:#333; font-size:18px; font-weight:500;}
+.booking_tbl{width:100%;margin:0 auto 30px auto; border:1px solid #ccc;}
+
+.booking_tbl ul{ margin:0; padding:0;list-style:none;}
+.booking_tbl li{ padding:2px 0;}
+.booking_tbl tbody td{ padding:15px 20px; vertical-align:top;}
+.booking_tbl tbody h3{ font-size:17px; font-weight:600;color:#0078de; margin:0 0 10px 0;}
+.booking_tbl tr:nth-child(2){ border-top:1px solid #ccc;}
+.booking_tbl tr:nth-child(3){ border-top:1px solid #ccc;}
+.booking_tbl table tr:nth-child(2){ border-top:none}
+.booking_tbl table tr:nth-child(3){ border-top:none}
+.booking_tbl table{ border:none; margin-bottom:0 !important;}
+.booking_tbl table td{ border:none;}
+.booking_tbl table td{ text-align:left; padding:2px 0;}
+.booking_tbl table td:last-child{ width:115px;text-align: right;padding-left: 20px;}
+.booking_tbl table tfoot{ background:none;}
+.booking_tbl table tfoot tr{ font-weight:700; border-top:1px solid #ccc;}
+.booking_tbl table tfoot tr td:first-child{ text-align:left;}
+.booking_tbl table tfoot td{ padding:10px 0;}
+.booking_addon_tbl td:first-child{ text-align:right; }
+.booking_addon_tbl td:last-child{ text-align:left; padding-left:30px; width:200px;}
+
+.booking_detail_tbl td:first-child{ width:20%; font-weight:600;}
+.booking_detail_tbl td:last-child{ width:80%; text-align:left !important;}
+
+.instruction h4{ font-size:18px; font-weight:600; color:#0078de; margin:0 0 10px 0;}
+.instruction ul{ margin:0; padding:0; list-style:none;}
+.instruction li{ padding:4px 0;}
+.instruction li i{ margin-right:5px;}
+
+.completed_right_tbl{ margin:20px 0 5px 0;}
+.completed_right_tbl td{ vertical-align:top; padding-bottom:20px;}
+.completed_right_tbl tr td:first-child{ width:70px; }
+.completed_right_tbl td i{width:50px; height:50px; text-align:center; padding-top:10px; font-size:24px; color:#005A78; border:2px solid #005A78;}
+.completed_right_tbl td h5{ margin:0 0 5px 0; font-weight:600; font-size:16px; border:none;}
+
+
+/****** end checkout ******/
+@media (max-width: 767px) {
+    .booking_tbl td{ display:block; width:100%;border-bottom: 1px solid #ccc;}
+    .booking_tbl tr td:nth-child(2){ border-bottom:none;}
+    .booking_tbl table td{ display:inline-block;}
+    .booking_tbl table td:first-child{ width:66%;}
+    .booking_tbl table td:last-child{ width:34%; text-align:right;}
+    .booking_detail_tbl td:first-child{ width:30% !important;}
+    .booking_detail_tbl td:last-child{ width:70% !important;}
+    .instruction{ margin-bottom:20px;}
+}
+
+/** help **/
+.faq_wra{ padding:20px 0;}
+.faq_wra .panel-title a:after{font: normal normal normal 14px/1 FontAwesome; content:"\f078"; float:right;}
+.faq_wra .panel-title a.collapsed:after{font: normal normal normal 14px/1 FontAwesome; content:"\f054"; float:right;}
+.faq_wra .panel-group .panel{ margin-bottom:15px !important;}
+.faq_wra .panel-heading{ padding:0 !important;}
+.faq_wra .panel-title > a{ padding:10px 10px; display:block;}
+.faq_wra .panel-heading{ background:#005A78 !important; color:#fff !important;}
+/** end help **/
+
+.pull_right {
+  float: right;
+}

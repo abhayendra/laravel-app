@@ -10,11 +10,9 @@ class FourmController extends Controller
         return view('frontend.forum.index',compact([]));
     }
 
-
     public function detail() {
         return view('frontend.forum.detail',compact([]));
     }
-
 
     public function profile() {
         return view('frontend.forum.profile',compact([]));

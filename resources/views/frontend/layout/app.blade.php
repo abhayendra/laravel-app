@@ -28,6 +28,19 @@
     {!! Html::script('https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js') !!}
     {!! Html::script('https://oss.maxcdn.com/respond/1.4.2/respond.min.js') !!}
     {!! Html::script('resources/assets/js/jquery.min.js') !!}
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.lazy/1.7.9/jquery.lazy.plugins.min.js"></script>
+    <script>
+        $('.lazy').Lazy({
+            // your configuration goes here
+            scrollDirection: 'vertical',
+            effect: 'fadeIn',
+            visibleOnly: true,
+            onError: function(element) {
+                console.log('error loading ' + element.data('src'));
+            }
+        });
+    </script>
     @php
     $cartCollection = Cart::getContent();
     @endphp
@@ -44,6 +57,7 @@
 </head>
 <body>
 <!--header-->
+
 <div class="header_wra">
     <div class="header_fixed">
         <div class="container-fluid">
@@ -60,7 +74,12 @@
                     <div class="mob_sigin">
                         @if(Auth::check())
                         <div class="user_name"><a href="{!! url('dashboard') !!}"><span>
-                          <img src="http://booktours.ca/resources/assets/images/ajay.jpg" alt="" class="img-res"></span> Hello, {!! Auth::user()->name !!}!</a>
+                            @if(Auth::user()->photo=="")
+                            {!! Html::image('resources/assets/images/profile_pic_bg.jpg??w=32&h=32&fit=crop-center','',['class'=>'img-res']) !!}
+                            @else
+                            {!! Html::image(Auth::user()->photo.'?w=32&h=32&fit=crop-center','',['class'=>'img-res']) !!}
+                           @endif
+                          </span> Hello, {!! Auth::user()->name !!}!</a>
                           <ul>
                           <li><a href="{!! url('dashboard') !!}"><i class="fa fa-user"></i> Profile</a></li>
                           <li><a href="{!! url('logout') !!}"><i class="fa fa-sign-out"></i> Logout</a></li>
@@ -70,9 +89,9 @@
                           <div class="signin"><a href="{!! url('login') !!}">Signin</a></div>
                          @endif
                         <ul class="round_btn">
-                            <li><a href="#"><i class="fa fa-question" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fa fa-heart" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i><span>{!! @$cartCollection->count() !!}</span></a></li>
+                            <li><a href="{!! url('faq') !!}"><i class="fa fa-question" aria-hidden="true"></i></a></li>
+                            <li><a href="{!! url('wishlist') !!}"><i class="fa fa-heart" aria-hidden="true"></i></a></li>
+                            <li><a href="{!! url('checkout') !!}"><i class="fa fa-shopping-cart" aria-hidden="true"></i><span>{!! @$cartCollection->count() !!}</span></a></li>
                         </ul>
                         <div class="clearfix"></div>
                     </div>
@@ -84,7 +103,13 @@
                     <div class="desktop_sigin">
                       @if(Auth::check())
                       <div class="user_name"><a href="{!! url('dashboard') !!}"><span>
-                        <img src="http://booktours.ca/resources/assets/images/ajay.jpg" alt="" class="img-res"></span> Hello, {!! Auth::user()->name !!}!</a>
+                                @if(Auth::user()->photo=="")
+                                      {!! Html::image('resources/assets/images/profile_pic_bg.jpg??w=32&h=32&fit=crop-center','',['class'=>'img-res']) !!}
+                                  @else
+                                      {!! Html::image(Auth::user()->photo.'?w=32&h=32&fit=crop-center','',['class'=>'img-res']) !!}
+                                  @endif
+
+                              </span> Hello, {!! Auth::user()->name !!}!</a>
                         <ul>
                         <li><a href="{!! url('dashboard') !!}"><i class="fa fa-user"></i> Profile</a></li>
                         <li><a href="{!! url('logout') !!}"><i class="fa fa-sign-out"></i> Logout</a></li>
@@ -94,8 +119,8 @@
                         <div class="signin"><a href="{!! url('login') !!}">Signin</a></div>
                        @endif
                         <ul class="round_btn">
-                            <li><a href="#"><i class="fa fa-question" aria-hidden="true"></i></a></li>
-                            <li><a href="#"><i class="fa fa-heart" aria-hidden="true"></i></a></li>
+                            <li><a href="{!! url('faq') !!}"><i class="fa fa-question" aria-hidden="true"></i></a></li>
+                            <li><a href="{!! url('wishlist') !!}"><i class="fa fa-heart" aria-hidden="true"></i></a></li>
                             <li><a href="{!! url('checkout') !!}"><i class="fa fa-shopping-cart" aria-hidden="true"></i><span>{!! @$cartCollection->count() !!}</span></a></li>
                         </ul>
                     </div>
@@ -105,7 +130,11 @@
     </div>
 </div>
 <!--end header-->
+
+
 @yield('content')
+
+
 <!--footer-->
 <div class="footer_wra">
     <div class="container-fluid">
@@ -131,7 +160,7 @@
                     <option>English</option>
                 </select>
                 <select>
-s                    <option>Dollar</option>
+                    <option>Dollar</option>
                 </select>
             </div>
         </div>
@@ -147,8 +176,12 @@ s                    <option>Dollar</option>
                         <h2>FEATURED TRAVEL DESTINATION</h2>
                         <p>
                           @php $featureTour = \App\Helpers\Helper::featureTour();  @endphp
-                          @foreach($featureTour as $ftKey=>$ftValue)
-                          <a href="{!! url('/location/'.$ftValue) !!}">{!! $ftValue !!}</a>  |
+                          @foreach($featureTour as $ftValue)
+                          @php
+                                $ftour = explode('/',$ftValue->page_url);
+                                $ft = urlencode(end($ftour));
+                          @endphp
+                          <a href="{!! url('/location/'.urldecode($ft)) !!}">{!! ucfirst(str_replace('+',' ',urldecode($ft))) !!}</a>  |
                           @endforeach
                          </p>
                     </div>
@@ -157,30 +190,21 @@ s                    <option>Dollar</option>
                     <div class="footer_matter">
                         <h2>POPULAR TOUR SEARCH</h2>
                         <p>
-                            @php $searchResult = \App\Helpers\Helper::searchResult();  @endphp
-                          @foreach($searchResult as $ftKey=>$ftValue)
-                          <a href="{!! url('/location/'.$ftValue) !!}">{!! $ftValue !!}</a>|
-                          @endforeach
+                         @php $searchResult = \App\Helpers\Helper::searchResult();  @endphp
+                            @foreach($searchResult as $sValue)
+                                @php
+                                $stour = explode('/',$sValue->page_url);
+                                $st = urlencode(end($stour));
+                                @endphp
+                                <a href="{!! url('/location/'.urldecode($st)) !!}">{!! ucfirst(str_replace('+',' ',urldecode($st))) !!}</a>  |
+                            @endforeach
                         </p>
                     </div>
                 </div>
             </div>
             <div class="line"></div>
         </div>
-        <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                <div class="copyright">
-                    Copyright © {!! date('Y') !!} {!! $setting['appname'] !!} . All rights reserved. <br>
-                    Terms and Conditions.
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                <div class="certificate">
-                    <a href="#">{!! Html::image('resources/assets/images/certificate1.png','Logo') !!}</a>
-                    <a href="#">{!! Html::image('resources/assets/images/certificate2.png','Logo') !!}</a>
-                    <a href="#">{!! Html::image('resources/assets/images/certificate3.png','Logo') !!}</a>
-                </div>
-            </div>
+            {!! $setting['copy_right'] !!}
         </div>
     </div>
 </div>

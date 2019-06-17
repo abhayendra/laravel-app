@@ -37,7 +37,7 @@
 			$this->col[] = ["label"=>"Lead Traveler Last Name","name"=>"lead_traveler_last_name"];
 			$this->col[] = ["label"=>"Email","name"=>"email"];
 			$this->col[] = ["label"=>"Phone","name"=>"phone"];
-			$this->col[] = ["label"=>"status","name"=>"status"];
+			$this->col[] = ["label"=>"status","name"=>"status","callback"=>function($row) {  if($row->status==1) { return "Paid"; } else { return "Pending"; }}];
 			# END COLUMNS DO NOT REMOVE THIS LINE
 
 			# START FORM DO NOT REMOVE THIS LINE

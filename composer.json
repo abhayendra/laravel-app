@@ -18,6 +18,7 @@
         "league/glide-laravel": "^1.0",
         "shawnsandy/img-fly": "^0.1.21",
         "stevebauman/location": "^3.0",
+        "stripe/stripe-php": "^6.30",
         "submtd/social-login": "^1.0"
     },
     "require-dev": {

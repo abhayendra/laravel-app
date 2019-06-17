@@ -4,8 +4,6 @@
     @php
     $cartCollection = Cart::getContent();
     @endphp
-
-
     <div class="mobile_search">
         <input name="" type="text" placeholder="Search Niagara Falls"> <span id="search_hide"><i class="fa fa-times" aria-hidden="true"></i></span>
     </div>
@@ -16,7 +14,11 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="fld_wra">
-                        <input type="text"  placeholder="Search destination, small group tours, hotel, cruise, deals" class="fld1"> <button class="btn1">Search</button>
+                        {!! Form::open(['url'=>'/tours/','method'=>'get']) !!}
+                        <input type="text" name="search" value="" id="search-box" autocomplete="off" placeholder="Where Do You Want to Go?" class="fld1"> <button type="submit" class="btn1">Find Tours</button>
+                        <div class="search_dd" id="suggesstion-box">
+                        </div>
+                        {!! Form::close() !!}
                     </div>
                 </div>
             </div>
@@ -28,9 +30,8 @@
         <div class="row">
             <div class="col-lg-12">
                 <ol class="breadcrumb-my">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Tour</a></li>
-                    <li><a href="#">Niagara Falls Boat Tour: Voyage to the Falls</a></li>
+                    <li><a href="{!! url('/') !!}">Home</a></li>
+                    <li><a href="{!! url('/tours') !!}">Tour</a></li>
                     <li class="active">Checkout</li>
                 </ol>
                 <div class="clearfix"></div>
@@ -41,21 +42,29 @@
     <!--Popular Destinations-->
     <div class="checkout_wra">
         <div class="container">
+           @if(count($cartCollection->toArray())>0)
             <div class="row">
               {!! Form::open(['url'=>'order/save-order']) !!}
                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                     <h1>Checkout</h1>
                     @foreach($cartCollection->toArray() as $cart)
                      @php $tourdetail = \App\Helpers\Helper::tourDetails($cart['id']); @endphp
-                    <h2>{{ $cart['name'] }}
+                     @php $price = \App\Helpers\Helper::tourPrice($cart['id']);   @endphp
+                    <h2>
+                        {{ $cart['name'] }} <a href="{!! url('order/cartRemove/'.$cart['id']) !!}"><abc class="pull_right">X</abc></a>
                         <span>{!! date('l, d M Y ', strtotime($cart['attributes']['date_of_booking'])) !!} {!! $tourdetail->departure_time !!}</span>
+                        <span>
+                            <input type="hidden" name="tour_id[]" value="{!! $tourdetail->id !!}">
+                            <input type="hidden" name="booking_date[]" value="{!! $cart['attributes']['date_of_booking'] !!}" >
+                            @php
+                            unset($cart['attributes']['date_of_booking']);
+                            @endphp
+                            @foreach($cart['attributes'] as $key=>$val)
+                                @php echo $val."  ".$key ." "  @endphp
+                            @endforeach
+                        </span>
                     </h2>
-
-                    <input type="hidden" name="tour_id[]" value="{!! $tourdetail->id !!}">
-                    <input type="hidden" name="booking_date[]" value="{!! $cart['attributes']['date_of_booking'] !!}" >
-
                     @endforeach
-
                     <ul class="breadcrumb_checkout">
                         <li class="active2">Traveler Info</li>
                         <li>Payment Info</li>
@@ -64,34 +73,36 @@
                     <div class="checkout_fld_wra">
                         <h3>Traveler Details</h3>
                         <div class="row">
-                            <div class="col-lg-12"><label for="lead">Lead Traveler (Adult)</label></div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12"><input name="traveler_first_name" id="lead" type="text" placeholder="First Name*" class="fld3"></div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12"><input name="traveler_last_name" type="text" placeholder="Last Name*"  class="fld3"></div>
+                            <div class="col-lg-12"><label for="lead">Lead Traveler (Adult) <span style="color: red">*</span> </label></div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12"><input name="traveler_first_name" id="lead" type="text" placeholder="First Name*" class="fld3" value="{!! Auth::user()->name !!}" required></div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12"><input name="traveler_last_name" type="text" placeholder="Last Name*"  class="fld3" required></div>
                         </div>
                     </div>
                     <div class="checkout_fld_wra">
                         <h3>Contact Details</h3>
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <label for="mail">Contact Email</label>
-                                <input name="email" id="lead" type="email" placeholder="Email Address*" class="fld3">
+                                <label for="mail">Contact Email <span style="color: red">*</span></label>
+                                <input name="email" id="lead" type="email" placeholder="Email Address*" value="{!! Auth::user()->email !!}" class="fld3" required>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <label for="text">Phone Number</label>
-                                <input name="phone" type="text" placeholder="Mobile Number*"  class="fld3">
+                                <label for="text">Phone Number <span style="color: red">*</span></label>
+                                <input name="phone" type="text" placeholder="Mobile Number*" value="{!! Auth::user()->phone !!}"  class="fld3" required>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <label for="country">Country</label>
-                                <select name="country_id" class="sel">
-                                    <option value="1">Canada</option>
-                                    <option value="2">USA</option>
+                                <label for="country">Country <span style="color: red">*</span></label>
+                                <select name="country_id" class="sel" required>
+                                    <option value="">Please Select Country </option>
+                                    @foreach($country as $cid=>$cname)
+                                    <option value="{!! $cid !!}">{!! $cname !!}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                                <label for="text">Receive our email offers and updates? *</label>
-                                <select  name="newsletter"  class="sel">
+                                <label for="text">Receive our email offers and updates? <span style="color: red">*</span></label>
+                                <select  name="newsletter"  class="sel" required>
                                     <option value="1">Yes, please!</option>
                                     <option value="0">No, I don't want deals and exclusives!</option>
                                 </select>
@@ -110,38 +121,51 @@
                         </div>
                     </div>
                 </div>
-                {!! Form::close() !!}
 
                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                     <div class="summary_wra">
                         <h3>Your Booking Summary </h3>
                         @php $i=1;  @endphp
                         @foreach($cartCollection->toArray() as $cart)
+                        @php
+                            $price = \App\Helpers\Helper::tourPriceTraveler($cart['id']);
+                        @endphp
                         <h4>{!! $cart['name'] !!}</h4>
                          @php $tourdetail = \App\Helpers\Helper::tourDetails($cart['id']); @endphp
-
-                         @php $travlers = array_except($cart[attributes],[date_of_booking]);  @endphp
-
+                         @php $travlers = array_except($cart['attributes'],['date_of_booking']);  @endphp
+                         @php $i=1;  @endphp
                         @foreach($travlers as $type=>$count)
-                        <div class="srart"><span>{!! $count !!}  {!! ucfirst($type) !!} X {!!  "200";  !!} </span> </div>
-                        @endforeach
+                         <div class="srart"><span>{!! $count !!}  {!! ucfirst($type) !!} X CA$ {!! $price[$type]  !!}  </span> </div>
+                         @php
+                          $total[$i] = $count*$price[$type];  $i++;
 
-                        <div class="srart"><span>Tour Location:</span> {!! $tourdetail->tour_location !!} </div>
-                        <div class="srart"><span>Meeting Point:</span> {!! $tourdetail->tour_from !!}</div>
-                        <div class="srart"><span>Departure Time:</span> {!! $tourdetail->departure_time !!} Daily</div>
-                        @php  $total[$i] = $cart['price']*$cart['quantity'];  $i++;  @endphp
+                         @endphp
+                          <input type="hidden" name="total_amount[]" value="{!! array_sum($total) !!}">
                         @endforeach
+                        <div class="srart"><span>Tour Location:</span> {!! $tourdetail->location !!} </div>
+                        <div class="srart"><span>Meeting Point:</span> {!! $tourdetail->departure_point !!}</div>
+                        <div class="srart"><span>Departure Time:</span> {!! $tourdetail->departure_time !!} </div>
+                        @php $subtotal[$y] = array_sum($total); $y++;  @endphp
 
-                        <div class="total">Total Price <span>CA$ @php  echo array_sum($total);  @endphp </span>
+                        @endforeach
+                        <div class="total">Total Price <span>CA$ @php  echo array_sum($subtotal);  @endphp </span>
+
                         <div class="clearfix"></div></div>
                         <div class="risk_free">Risk free: You can cancel later, so lock in this great price today.</div>
                         <div class="demand"><span>In high demand!</span> Booked 7 times in the last 24 hours</div>
                         <div class="booking_help">Having trouble booking online?<br>
-                            Call +1 (123) 456-7890</div>
-
+                            Call {!! $settings->phone !!}</div>
                     </div>
                 </div>
+                {!! Form::close() !!}
             </div>
+            @else
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                  <h3 style="text-align:center; color:red;">This Cart is empty </h3>
+                </div>
+            </div>
+            @endif
         </div>
     </div>
     <!--end Popular Destinations-->

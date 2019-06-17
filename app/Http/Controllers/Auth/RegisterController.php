@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Helpers\Helper;
+use Mail;
 
 class RegisterController extends Controller
 {
@@ -72,8 +73,19 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         $settings = Helper::setting();
-        echo "<pre>"; print_r($settings); echo "</pre>";
-        //die();
+
+        $maildata = array('sender_name'=>$settings->appname,
+        'sender_email'=>$settings->email_sender,
+        'name'=>$data['full_name'],
+        'email'=>$data['email']
+      );
+
+
+        Mail::send('email.register', $maildata, function($message) {
+           $message->to($maildata['sender_email'], $maildata['sender_name'])
+           ->subject(' Thenks for register with us');
+           $message->from($maildata['email'],$maildata['name']);
+        });
 
         return User::create([
             'name' => $data['full_name'],
@@ -87,13 +99,9 @@ class RegisterController extends Controller
         ]);
 
 
-        $data = ['name'=>$data['full_name'],'email'=>$data['email'],''];
-        Mail::send('email.register', $data, function($message) {
-            $message->to('er.abhayendra@gmail.com', 'Tutorials Point')->subject
-            ('Laravel Basic Testing Mail');
-            $message->from($settings['email_sender'],$settings['appname']);
-        });
+
 
 
     }
+
 }

@@ -10,8 +10,12 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="fld_wra">
-                    <input type="text"  placeholder="Search destination, small group tours, hotel, cruise, deals" class="fld1"> <button class="btn1">Search</button>
-                </div>
+                    {!! Form::open(['url'=>'/tours/','method'=>'get']) !!}
+                    <input type="text" name="search" value="" id="search-box" autocomplete="off" placeholder="Where Do You Want to Go?" class="fld1"> <button type="submit" class="btn1">Find Tours</button>
+                    <div class="search_dd" id="suggesstion-box">
+                    </div>
+                    {!! Form::close() !!}
+                 </div>
             </div>
         </div>
     </div>
@@ -23,6 +27,14 @@
         <div class="row">
             {!! Form::open(['url'=>'login']) !!}
             <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 col-lg-offset-2 col-md-offset-2">
+              <div style="top:10px;">
+                @if(Session::has('message'))
+              <div class="alert alert-success">{!! Session::get('message') !!}</div>
+              @endif
+              @if(Session::has('error'))
+              <div class="alert alert-danger">{!! Session::get('error') !!}</div>
+              @endif
+              </div>
                 <h3>Log In with your favorite social network</h3>
                 <a href="redirect/facebook" class="fb_connect"><i class="fa fa-facebook" aria-hidden="true"></i> Connect</a>
                 <a href="redirect/google" class="g_connect"><i class="fa fa-google" aria-hidden="true"></i> Connect</a>

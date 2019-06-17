@@ -42,7 +42,7 @@ ul.round_btn { margin:10px 0 0 0; padding:0; list-style:none; float:right;}
 
 .user_name{ float:right;margin:0 -20px 0 30px;line-height:50px; position:relative;}
 .user_name span{width: 32px;height: 32px; margin-right:3px;display: inline-block; border-radius:4px;}
-.user_name ul{ display:none; position:absolute;}
+.user_name ul{ display:none; position:absolute; font-size:16px; z-index:10;}
 .user_name:hover ul{ display:block; position:absolute; right:0; z-index:100;}
 .user_name a, .user_name a:focus{ padding:0 15px; }
 .user_name:hover a{background:#006AC3;color:#fff; display:block;}
@@ -73,7 +73,8 @@ ul.list{ margin:0; padding:0; list-style:none;}
 /*** end footer ***/
 @media (max-width: 767px) {
 .container-fluid{ padding:0 15px !important;}
-.my_nav{ float:none; background:#f1f1f1;}
+.my_nav{ flo at:none;  back ground:#f1f1f1; display:none;}
+.my_nav.nav-menus-wrapper-open{ display:block;}
 .navbar-nav > li > a{ padding:6px 12px !important; transition:all ease .5s; margin:0 !important; border:none !important; font-size:13px; font-weight:600; background:#015DAB; color:#fff !important;}
 .navbar-nav > li > a:hover{ background:#fedf01 !important; color:#232323 !important; border-bottom:1px solid #fff;}
 .my_nav ul{ margin-left:0;}
@@ -104,7 +105,7 @@ ul.list{ margin-bottom:10px;}
 .mob_sigin .round_btn a span{ background:#FEDF01; color:#333;}
 .mob_sigin .signin a:hover{ background:#fff; color:#006AC3;}
 #search_show{ padding:14px 6px;  display:inline-block; font-size:16px; position: absolute; right: 35px;}
-.header_fixed{ position:fixed; left:0; top:0; width:100%; z-index:1001;border-bottom: 3px solid #FEDF01;}
+.header_fixed{ position:fixed; background:#fff; left:0; top:0; width:100%; z-index:1001;border-bottom: 3px solid #FEDF01;}
 .header_wra{ height:50px;}
 
 .footer_wra, .mob_footer{ display:none;}
@@ -112,7 +113,7 @@ ul.list{ margin-bottom:10px;}
 }
 
 @media (min-width: 768px) and (max-width: 1135px) {
-.my_nav ul{ margin-left:5px; margin-top:9px;}
+.my_nav ul{ margin-left:5px;}
 .signin{ margin-left:25px;}
 .nav > li > a{ padding:3px 5px !important; font-size:12px;}
 .navbar-brand{ margin:0 -10px; padding:5px 15px 5px 0 !important; height:auto !important;}
