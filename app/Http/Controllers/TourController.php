@@ -7,7 +7,6 @@ use App\PopularDestination;
 use App\Review;
 use App\TourCategory;
 use App\UserLog;
-use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Tour;
@@ -21,8 +20,9 @@ class TourController extends Controller
 {
     public function index() {
 
-        $ip = \Request::ip();
+        $ip = \Request::ip();;
         $position = Location::get($ip);
+
         $countryId = Country::where('code',$position->countryCode)
             ->first();
         $categories = Tour::select(DB::raw('count(tours.id) as total_tours,tour_categories.category_name'))
@@ -34,7 +34,7 @@ class TourController extends Controller
             ->where('country',$countryId->id)
             ->orderBy('visit','DESC')
             ->take(4)
-            ->get()->toArray();
+            ->get();
 
         $remainingTours = 4 - count($tours);
         if(count($tours)<4) {
@@ -217,8 +217,9 @@ class TourController extends Controller
     }
 
     public function saveReview(Request $request) {
+
         $review = new Review;
-        $review->tour_id = Input::get('tour_id');
+        $review->tour_id = $request->tour_id;
         $review->user_id = Auth::user()->id;
         $review->review = $request->comment;
         $review->rating = $request->rating;
@@ -226,7 +227,5 @@ class TourController extends Controller
         $review->save();
         return redirect()->back();
     }
-
-
 
 }

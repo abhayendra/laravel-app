@@ -223,7 +223,6 @@
                         </div>
                     @endif
                     @if(Auth::check())
-
                     {!! Form::open(['url'=>'saveReview']) !!}
 
                     <div class="row" id="post-review-box">
@@ -238,8 +237,8 @@
                         </div>
                     </div>
                     {!! Form::close()  !!}
-
                     @endif
+
                     <div class="heading3" id="expand-5">Location <i class="fa fa-angle-down" aria-hidden="true"></i></div>
                     <div class="detail_box" id="expandable-5">
                         <iframe src="https://www.google.com/maps?q={!! urlencode($tour->location) !!}&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>

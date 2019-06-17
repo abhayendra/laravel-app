@@ -25,6 +25,7 @@ Route::post('register', 'Auth\RegisterController@register');
 Route::get('faq','HomeController@faqPage');
 Route::get('page/{any}','HomeController@page');
 
+
 // Password Reset Routes...
 Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
 Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');
@@ -33,7 +34,8 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 Route::get('dashboard','UserController@dashboard');
 Route::get('saveWishlist/{tour_id}','UserController@saveWishlist');
 Route::get('wishlist','UserController@wishlist');
-Route::get('/user/edit_profile/{id}','UserController@editProfile');
+Route::get('/user/edit_profile/{id}','UserController@editProfile');
+Route::post('/user/saveEditProfile','UserController@saveEditProfile');
 
 
 Route::get('/redirect/{service}','SocialAuthController@redirect');
@@ -64,7 +66,7 @@ Route::get('getCountry','AjaxController@country');
 Route::get('getProvince','AjaxController@province');
 
 //Blog Controller
-Route::get('blog','BlogController@index');
+Route::get('blogs','BlogController@index');
 Route::get('blog/details/{slug}','BlogController@details');
 
 //forum
@@ -73,5 +75,3 @@ Route::get('forum/show_topic','ForumController@detail');
 Route::get('forum/profile','ForumController@profile');
 Route::get('admin/getProvince','AdminAjaxController@getProvince');
 //Route::get('admin/')
-
-

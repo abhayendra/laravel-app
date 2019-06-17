@@ -1,6 +1,7 @@
 @php
     $menus = \App\Helpers\Helper::menu();
 @endphp
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,6 +19,7 @@
     @else
         {!! Html::style('resources/assets/css/style.css') !!}
     @endif
+
     {!! Html::style('resources/assets/css/header_footer.css') !!}
     {!! Html::style('resources/assets/css/bootstrap.css') !!}
     {!! Html::style('resources/assets/css/bootstrap-theme.css') !!}
@@ -57,7 +59,6 @@
 </head>
 <body>
 <!--header-->
-
 <div class="header_wra">
     <div class="header_fixed">
         <div class="container-fluid">
@@ -133,8 +134,6 @@
 
 
 @yield('content')
-
-
 <!--footer-->
 <div class="footer_wra">
     <div class="container-fluid">

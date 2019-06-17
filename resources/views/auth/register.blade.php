@@ -1,3 +1,4 @@
+
 @extends('frontend.layout.app')
 @section('content')
 <!--mobile search-->
@@ -191,6 +192,3 @@
 <!--end reg-->
 <!--Recommended-->
 @endsection
-
-
-

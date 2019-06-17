@@ -28,4 +28,3 @@ class Tour extends Model
 
     }
 }
-

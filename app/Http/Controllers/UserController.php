@@ -43,6 +43,19 @@ class UserController extends Controller
        return view('frontend.user.editProfile',compact(['user']));
     }
 
+    public function saveEditProfile(Request $request) {
+         $user = User::find($request->user_id);
+         $user->name = $request->full_name;
+         $user->email = $request->email;
+         $user->phone = $request->phone;
+         $user->gender = $request->gender;
+         $user->date_of_birth = $request->date_of_birth;
+         $user->password = bcrypt($request->password);
+         $user->save();
+         return redirect('/dashboard');
+
+    }
+
 
 
 

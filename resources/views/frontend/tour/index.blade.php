@@ -6,13 +6,6 @@
             $('#popular_destinations').delay(8000).fadeIn(400);
         });
     </script>
-
-    @php
-    echo "<pre>";
-    print_r($tours);
-    echo "</pre>";
-    @endphp
-
     <!--banner-->
     <div class="banner_wra" style="background-image:{!! $setting['home_page_banner'] !!}">
         <div class="container">
@@ -68,7 +61,6 @@
                     <div class="see_all"><a href="{!! url('/location/all') !!}">see all</a></div>
                 </div>
                 @foreach($tours as $tour)
-
                 <div class="box_wra">
                     <div class="box">
                         <div class="box_img">

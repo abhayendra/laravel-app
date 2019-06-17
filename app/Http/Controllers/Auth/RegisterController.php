@@ -80,6 +80,8 @@ class RegisterController extends Controller
         'email'=>$data['email']
       );
 
+      echo "<pre>"; print_r($maildata); echo "</pre>";
+      exit;
 
         Mail::send('email.register', $maildata, function($message) {
            $message->to($maildata['sender_email'], $maildata['sender_name'])
