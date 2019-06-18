@@ -66,7 +66,7 @@ Route::get('getCountry','AjaxController@country');
 Route::get('getProvince','AjaxController@province');
 
 //Blog Controller
-Route::get('blogs','BlogController@index');
+Route::get('blog','BlogController@index');
 Route::get('blog/details/{slug}','BlogController@details');
 
 //forum

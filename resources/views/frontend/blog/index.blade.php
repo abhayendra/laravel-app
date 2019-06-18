@@ -1,7 +1,7 @@
 @extends('frontend.layout.app')
 @section('content')
 
-@php echo "<pre>"; print_r($blogs); echo "</pre>"; @endphp
+
 <!--breadcrumb-->
 <div class="search_wra">
     <div class="container">
