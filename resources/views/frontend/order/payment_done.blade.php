@@ -48,9 +48,9 @@ $cartCollection = Cart::getContent();
             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                 <h1>Checkout</h1>
                 <ul class="breadcrumb_checkout">
-                    <li>Traveler Info</li>
-                    <li>Payment Info</li>
-                    <li class="active3">Completed</li>
+                    <li class="active20">Traveler Info</li>
+                    <li class="active20">Payment Info</li>
+                    <li class="active20">Completed</li>
                 </ul>
 
                 <div class="checkout_fld_wra">
@@ -65,7 +65,7 @@ $cartCollection = Cart::getContent();
                         <tbody>
                         <tr><h2>{!! $order->title !!}</h2></tr>
                         <tr>
-                            <td>
+                            <td width="50%">
                                 <h3>Customer Details</h3>
                                 <ul>
                                     <li><i class="fa fa-users"></i> {!! $cartInfo['quantity'] !!} Reserved</li>
@@ -78,7 +78,7 @@ $cartCollection = Cart::getContent();
                                 $price = \App\Helpers\Helper::tourPriceTraveler($order->tour_id);
                             @endphp
 
-                            <td>
+                            <td width="50%">
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tbody>
                                     @foreach($price as $key=>$val)

@@ -253,7 +253,7 @@
                             @php echo "<pre>";  print_r($error) @endphp
                         @endforeach
                     @endif
-                    <div class="book_right_wra" data-spy="affix" data-offset-top="497">
+                    <div class="book_right_wra" >
                         <div class="price_box">
                             From
                             <span><small>CA$</small>{!!  $price[0]->price !!}</span>
@@ -359,6 +359,17 @@
         </div>
         {!! Form::close() !!}
     </div>
+
+    {!! Html::script('resources/assets/js/sticky-sidebar.js') !!}
+    <script type="text/javascript">
+
+    	var a = new StickySidebar('.book_right_wra', {
+    		topSpacing: 45,
+    		bottomSpacing: 110,
+    		containerSelector: '.row',
+    		innerWrapperSelector: '.sidebar__inner'
+    	});
+    </script>
 
     <script>
         $(document).ready(function(){

@@ -67,14 +67,14 @@
 
                     @endforeach
                     <ul class="breadcrumb_checkout">
-                        <li>Traveler Info</li>
+                        <li class="active20">Traveler Info</li>
                         <li class="active2">Payment Info</li>
                         <li>Completed</li>
                     </ul>
 
                     <div class="checkout_fld_wra">
                         <h3>Payment Details</h3>
-                        <div class="row">
+                        <div class="row1">
                             @if (Session::has('success'))
                                 <div class="alert alert-success text-center">
                                     <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
@@ -84,36 +84,58 @@
                             <form role="form" action="{{ route('stripe.post') }}" method="post" class="require-validation"
                                   data-cc-on-file="false"
                                   data-stripe-publishable-key="{{ env('STRIPE_KEY') }}"
-                                  id="payment-form">
+                                  id="payment-form" autocomplete="off">
                                 {!! csrf_field() !!}
                                 <div class='form-row row'>
-                                    <div class='col-xs-12 form-group required'>
+                                    <div class='col-xs-12 required'>
                                         <label class='control-label'>Name on Card</label> <input
-                                                class='fld3' size='4' type='text'>
+                                                class='fld3' size='4' type='text' autocomplete="off">
                                     </div>
                                 </div>
                                 <div class='form-row row'>
-                                    <div class='col-xs-12 form-group card required'>
+                                    <div class='col-xs-12 card required'>
                                         <label class='control-label'>Card Number</label> <input
                                                 autocomplete='off' class='fld3 card-number' size='20'
-                                                type='text'>
+                                                type='text' autocomplete="off">
                                     </div>
                                 </div>
-                                <div class='form-row row'>
-                                    <div class='col-xs-12 col-md-4 form-group cvc required'>
-                                        <label class='control-label'>CVC</label> <input autocomplete='off'
-                                                                                        class='fld3 card-cvc' placeholder='ex. 311' size='4'
-                                                                                        type='text'>
-                                    </div>
-                                    <div class='col-xs-12 col-md-4 form-group expiration required'>
-                                        <label class='control-label'>Expiration Month</label> <input
+                                <div class='form-row form-group row'>
+                                    <div class='col-xs-12 col-md-4 expiration required'>
+                                        <label class='control-label'>Expiration Month</label> <!--<input
                                                 class='fld3 card-expiry-month' placeholder='MM' size='2'
-                                                type='text'>
+                                                type='text' autocomplete="off" maxlength="2">-->
+                                                <select class='fld3 card-expiry-month'>
+                                                  <option value="01">01 (Jan)</option>
+                                                  <option value="02">02 (Feb)</option>
+                                                  <option value="03">03 (Mar)</option>
+                                                  <option value="04">04 (Apr)</option>
+                                                  <option value="05">05 (May)</option>
+                                                  <option value="06">06 (Jun)</option>
+                                                  <option value="07">07 (Jul)</option>
+                                                  <option value="08">08 (Aug)</option>
+                                                  <option value="09">09 (Sep)</option>
+                                                  <option value="10">10 (Oct)</option>
+                                                  <option value="11">11 (Nov)</option>
+                                                  <option value="12">12 (Dec)</option>
+                                                </select>
                                     </div>
-                                    <div class='col-xs-12 col-md-4 form-group expiration required'>
-                                        <label class='control-label'>Expiration Year</label> <input
+                                    <div class='col-xs-12 col-md-4 expiration required'>
+                                        <label class='control-label'>Expiration Year</label> <!--<input
                                                 class='fld3 card-expiry-year' placeholder='YYYY' size='4'
-                                                type='text'>
+                                                type='text' autocomplete="off" maxlength="4">-->
+                                                <select class='fld3 card-expiry-year'>
+                                                  <option value="19">2019</option>
+                                                  <option value="20">2020</option>
+                                                  <option value="21">2021</option>
+                                                  <option value="22">2022</option>
+                                                  <option value="23">2023</option>
+                                                  <option value="24">2024</option>
+                                                </select>
+                                    </div>
+                                    <div class='col-xs-12 col-md-4 cvc required'>
+                                        <label class='control-label'>CVC</label> <input autocomplete='off'
+                                                class='fld3 card-cvc' placeholder='ex. 311' size='4'
+                                                type='password' autocomplete="off" maxlength="4">
                                     </div>
                                 </div>
 
@@ -126,7 +148,7 @@
 
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        <button type="submit" class="btn4">Pay Now<i class="fa fa-angle-right"></i></button>
+                                        <button type="submit" class="btn4">Pay Now <i class="fa fa-angle-right"></i></button>
                                     </div>
                                 </div>
                             </form>
