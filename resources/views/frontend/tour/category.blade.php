@@ -132,6 +132,7 @@
         // bind change event to select
         $('#shortBy').on('change', function () {
             var url = $(this).val(); // get selected value
+            alert(url);
             if (url) { // require a URL
                 window.location = url; // redirect
             }

@@ -155,11 +155,11 @@ class TourController extends Controller
         }
 
         $tours = $tours->paginate('24');
-
         return view('frontend.tour.tours',compact(['categories','tours','search']));
     }
 
     public function category($any) {
+
         $order = $_GET['order'];
         $category = urldecode($any);
         $catId = TourCategory::select('id','category_name')
@@ -177,34 +177,27 @@ class TourController extends Controller
         if($order=="new") {
             $tours = $tours->orderBy('created_at','ASC');
         }
-
         if($order=="duration_low") {
             $tours = $tours->orderBy('tour_duration','ASC');
         }
         if($order=="duration_high") {
             $tours = $tours->orderBy('tour_duration','DESC');
         }
-
         if($order=="duration_high") {
             $tours = $tours->orderBy('tour_duration','DESC');
         }
-
         if($order=="review_high") {
             $tours = $tours->orderBy('id','ASC');
         }
-
         if($order=="review_low") {
             $tours = $tours->orderBy('id','DESC');
         }
-
         if($order=="price_high") {
             $tours = $tours->orderBy('id','DESC');
         }
-
         if($order=="price_low") {
             $tours = $tours->orderBy('id','DESC');
         }
-
         $tours = $tours->paginate('24');
 
         if($category=="all") {
@@ -212,6 +205,8 @@ class TourController extends Controller
             $tours = Tour::with('category','tourImages')
                 ->paginate('24');
         }
+
+        //echo "<pre>"; print_r($tours); echo "</pre>"; die;
 
         return view('frontend.tour.category',compact('categories','tours','categoryName'));
     }
