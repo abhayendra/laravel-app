@@ -9,11 +9,11 @@ use Illuminate\Http\Request;
 class BlogController extends Controller
 {
     public function index() {
-        $categories = BlogCategory::where('status',1)->get();
-        $blogs = Blog::where('status','1')
-            ->orderBy('created_at','desc')
-            ->groupBy('category_id')
-            ->paginate('5');
+        $categories = BlogCategory::where('status',1)
+            ->get();
+        $blogs = Blog::where('status','1')->orderBy('created_at','desc')->take('10')->get();
+        $blogs = $blogs->groupBy('category_id')->toArray();
+
         $mostpopular = Blog::where('status','1')
             ->orderBy('id','desc')
             ->take(5)
