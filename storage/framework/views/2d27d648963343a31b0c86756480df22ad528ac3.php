@@ -45,14 +45,14 @@
             <div class="short_wra" id="short_by">
                 Short By:
                 <select class="sortby" id="shortBy">
-                    <option value="<?php echo url(Request::segment(1).'/'.$keyword.'?order=relevance'); ?>">Relevance</option>
-                    <option value="<?php echo url(Request::segment(1).'/'.$keyword.'?order=new'); ?>">New &amp; Popular</option>
-                    <option value="<?php echo url(Request::segment(1).'/'.$keyword.'?order=review_high'); ?>">Reviews - high to low</option>
-                    <option value="<?php echo url(Request::segment(1).'/'.$keyword.'?order=review_low'); ?>">Reviews - low to high</option>
-                    <option value="<?php echo url(Request::segment(1).'/'.$keyword.'?order=price_high'); ?>">Price - high to low</option>
-                    <option value="<?php echo url(Request::segment(1).'/'.$keyword.'?order=price_low'); ?>">Price - low to high</option>
-                    <option value="<?php echo url(Request::segment(1).'/'.$keyword.'?order=duration_high'); ?>">Duration - high to low</option>
-                    <option value="<?php echo url(Request::segment(1).'/'.$keyword.'?order=duration_low'); ?>">Duration - low to high</option>
+                    <option <?php echo e($order == 'relevance' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=relevance'); ?>">Relevance</option>
+                    <option <?php echo e($order == 'new' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=new'); ?>">New &amp; Popular</option>
+                    <option <?php echo e($order == 'review_high' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=review_high'); ?>">Reviews - high to low</option>
+                    <option <?php echo e($order == 'review_low' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=review_low'); ?>">Reviews - low to high</option>
+                    <option <?php echo e($order == 'price_high' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=price_high'); ?>">Price - high to low</option>
+                    <option <?php echo e($order == 'price_low' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=price_low'); ?>">Price - low to high</option>
+                    <option <?php echo e($order == 'duration_high' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=duration_high'); ?>">Duration - high to low</option>
+                    <option <?php echo e($order == 'duration_low' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=duration_low'); ?>">Duration - low to high</option>
                 </select>
             </div>
             <div class="clearfix"></div>

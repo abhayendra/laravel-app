@@ -155,7 +155,7 @@ class TourController extends Controller
         }
 
         $tours = $tours->paginate('24');
-        return view('frontend.tour.tours',compact(['categories','tours','search']));
+        return view('frontend.tour.tours',compact(['categories','tours','search','order']));
     }
 
     public function category($any) {
