@@ -35,6 +35,8 @@
 
     <?php echo Html::style('resources/assets/css/responsive-tabs.css'); ?>
 
+    <?php echo Html::style('resources/assets/css/ashutosh.css'); ?>
+
     <?php echo Html::style('http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css'); ?>
 
     <?php echo Html::script('https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js'); ?>
@@ -151,8 +153,8 @@
 </div>
 <!--end header-->
 
-
 <?php echo $__env->yieldContent('content'); ?>
+
 <!--footer-->
 <div class="footer_wra">
     <div class="container-fluid">
@@ -314,11 +316,13 @@ $('.r-tabs-anchor').click(function() {
     });
     $('.heading3').click(function() {
         $("i", this).toggleClass("fa-angle-down fa-angle-up");
+        return false;
     });
     $('.heading3').click(function(){
         target_num = $(this).attr('id').split('-')[1];
         content_id = '#expandable-'.concat(target_num);
         $(content_id).slideToggle('fast');
+        return false;
     });
     $('a[href*="#"]')
         .not('[href="#"]')
@@ -339,6 +343,7 @@ $('.r-tabs-anchor').click(function() {
                     });
                 }
             }
+            return false;
         });
     $(document).ready(function(){
         $("#search-box").keyup(function(){

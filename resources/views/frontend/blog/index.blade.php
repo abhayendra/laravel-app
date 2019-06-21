@@ -1,7 +1,5 @@
 @extends('frontend.layout.app')
 @section('content')
-
-
 <!--breadcrumb-->
 <div class="search_wra">
     <div class="container">
@@ -35,7 +33,6 @@
             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                 @php $i=1;  @endphp
                 @foreach($blogs as $key=>$blog)
-
                 <div class="heading2">
                     @if($i==1)
                     <select class="category" id="category">
@@ -50,13 +47,13 @@
                 </div>
                 @foreach($blog as $b)
                 <div class="blog_box">
-                    <div class="blog_img">{!! Html::image('resources/assets/images/blog1.jpg','',['class'=>'img-res']) !!}</div>
+                    <div class="blog_img">{!! Html::image($b['cover_image'],'',['class'=>'img-res']) !!}</div>
                     <div class="blog_txt">
-                        <h2><a href="{!! url("blog/details/".$b['slug']) !!}">{!! $b['title'] !!}</a></h2>
+                        <h2><a href="{!! url("blog/".$b['slug']) !!}">{!! $b['title'] !!}</a></h2>
                         <div class="date_row"><a href="#"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> {!! date('d M Y ', strtotime($b['created_at'])) !!}</a> <a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i> {!!  $b['location'] !!}</a>  <a href="#"><i class="fa fa-comment-o" aria-hidden="true"></i> 0 comment</a></div>
                         <p>{{ substr(strip_tags($b['content']),0,250) }}</p>
                         <div class="by"><a href="#">By: Superadmin </a></div>
-                        <div class="read_more"><a href="{!! url("blog/details/".$b['slug']) !!}">Read More</a></div>
+                        <div class="read_more"><a href="{!! url("blog/".$b['slug']) !!}">Read More</a></div>
                         <div class="clearfix"></div>
                     </div>
                     <div class="clearfix"></div>

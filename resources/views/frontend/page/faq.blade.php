@@ -48,26 +48,31 @@
                         <div class="line2"></div>
                         <div class="faq_wra">
                             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                              @php $i=1;  @endphp
                               @foreach($faq as $f)
                                 <div class="panel panel-default">
                                     <div class="panel-heading" role="tab" id="heading{!! $f->id !!}">
                                         <h4 class="panel-title">
-                                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{!! $f->id !!}" aria-expanded="false" aria-controls="collapse{!! $f->id !!}">
+                                            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{!! $f->id !!}" aria-expanded="@if($i==1) true @else false @endif" aria-controls="collapse{!! $f->id !!}">
                                               {!! $f->question !!}
                                             </a>
                                         </h4>
                                     </div>
-                                    <div id="collapse{!! $f->id !!}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading{!! $f->id !!}">
+                                    <div id="collapse{!! $f->id !!}" class="panel-collapse @if($i!=1) collapse @endif  " role="tabpanel" aria-labelledby="heading{!! $f->id !!}">
                                         <div class="panel-body">
                                           {!! $f->answer !!}
                                         </div> 
                                     </div>
                                 </div>
+                                @php $i++;  @endphp
                               @endforeach
                             </div>
                         </div>
                     </div>
+                    
                 </div>
+
+                
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 col-lg-pull-9 col-md-pull-9 col-sm-pull-9">
                     <div class="list_menu">
                         <div class="filter_head"><i class="fa fa-caret-right" aria-hidden="true"></i>FAQ Categories</div>
@@ -83,4 +88,18 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function(){
+        $("#demo").on("hide.bs.collapse", function(){
+            $(".btn").html('<span class="glyphicon glyphicon-collapse-down"></span> Open');
+        });
+        $("#demo").on("show.bs.collapse", function(){
+            $(".btn").html('<span class="glyphicon glyphicon-collapse-up"></span> Close');
+        });
+        });
+</script>
+  
+   
+
 @endsection

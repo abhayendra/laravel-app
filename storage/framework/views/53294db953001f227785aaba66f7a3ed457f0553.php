@@ -262,7 +262,7 @@
                             <?php echo "<pre>";  print_r($error) ?>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     <?php endif; ?>
-                    <div class="book_right_wra" data-spy="affix" data-offset-top="497">
+                    <div class="book_right_wra" >
                         <div class="price_box">
                             From
                             <span><small>CA$</small><?php echo $price[0]->price; ?></span>
@@ -371,6 +371,18 @@
         <?php echo Form::close(); ?>
 
     </div>
+
+    <?php echo Html::script('resources/assets/js/sticky-sidebar.js'); ?>
+
+    <script type="text/javascript">
+
+    	var a = new StickySidebar('.book_right_wra', {
+    		topSpacing: 45,
+    		bottomSpacing: 110,
+    		containerSelector: '.row',
+    		innerWrapperSelector: '.sidebar__inner'
+    	});
+    </script>
 
     <script>
         $(document).ready(function(){
