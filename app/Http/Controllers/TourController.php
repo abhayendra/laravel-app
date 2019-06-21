@@ -154,7 +154,7 @@ class TourController extends Controller
             $tours = $tours->orderBy('id','DESC');
         }
 
-        $tours = $tours->paginate('24');
+        $tours = $tours->paginate('3');
         return view('frontend.tour.tours',compact(['categories','tours','search','order']));
     }
 

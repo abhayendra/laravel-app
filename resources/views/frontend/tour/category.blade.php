@@ -38,14 +38,14 @@
             <div class="short_wra" id="short_by">
                 Short By:
                 <select class="sortby" id="shortBy">
-                    <option value="{!! url(Request::segment(1).'/'.$keyword.'?order=relevance')  !!}">Relevance</option>
-                    <option value="{!! url(Request::segment(1).'/'.$keyword.'?order=new')  !!}">New &amp; Popular</option>
-                    <option value="{!! url(Request::segment(1).'/'.$keyword.'?order=review_high')  !!}">Reviews - high to low</option>
-                    <option value="{!! url(Request::segment(1).'/'.$keyword.'?order=review_low')  !!}">Reviews - low to high</option>
-                    <option value="{!! url(Request::segment(1).'/'.$keyword.'?order=price_high')  !!}">Price - high to low</option>
-                    <option value="{!! url(Request::segment(1).'/'.$keyword.'?order=price_low')  !!}">Price - low to high</option>
-                    <option value="{!! url(Request::segment(1).'/'.$keyword.'?order=duration_high')  !!}">Duration - high to low</option>
-                    <option value="{!! url(Request::segment(1).'/'.$keyword.'?order=duration_low')  !!}">Duration - low to high</option>
+                    <option {{ $order == 'relevance' ? ' selected' : '' }} value="{!! url(Request::segment(1).'/'.$categoryName.'?order=relevance')  !!}">Relevance</option>
+                    <option {{ $order == 'new' ? ' selected' : '' }} value="{!! url(Request::segment(1).'/'.$categoryName.'?order=new')  !!}">New &amp; Popular</option>
+                    <option {{ $order == 'review_high' ? ' selected' : '' }} value="{!! url(Request::segment(1).'/'.$categoryName.'?order=review_high')  !!}">Reviews - high to low</option>
+                    <option {{ $order == 'review_low' ? ' selected' : '' }} value="{!! url(Request::segment(1).'/'.$categoryName.'?order=review_low')  !!}">Reviews - low to high</option>
+                    <option {{ $order == 'price_high' ? ' selected' : '' }} value="{!! url(Request::segment(1).'/'.$categoryName.'?order=price_high')  !!}">Price - high to low</option>
+                    <option {{ $order == 'price_low' ? ' selected' : '' }} value="{!! url(Request::segment(1).'/'.$categoryName.'?order=price_low')  !!}">Price - low to high</option>
+                    <option {{ $order == 'duration_high' ? ' selected' : '' }} value="{!! url(Request::segment(1).'/'.$categoryName.'?order=duration_high')  !!}">Duration - high to low</option>
+                    <option {{ $order == 'duration_low' ? ' selected' : '' }} value="{!! url(Request::segment(1).'/'.$categoryName.'?order=duration_low')  !!}">Duration - low to high</option>
                 </select>
             </div>
             <div class="clearfix"></div>
@@ -132,7 +132,6 @@
         // bind change event to select
         $('#shortBy').on('change', function () {
             var url = $(this).val(); // get selected value
-            alert(url);
             if (url) { // require a URL
                 window.location = url; // redirect
             }

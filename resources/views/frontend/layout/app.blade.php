@@ -311,7 +311,7 @@ $('.r-tabs-anchor').click(function() {
                     });
                 }
             }
-            return false;
+            
         });
     $(document).ready(function(){
         $("#search-box").keyup(function(){
