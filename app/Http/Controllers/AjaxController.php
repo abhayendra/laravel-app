@@ -6,6 +6,7 @@ use App\Country;
 use App\Region;
 use App\Tour;
 use App\UserLog;
+use App\Blog;
 use Browser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -54,7 +55,7 @@ class AjaxController extends Controller
             foreach($tourtitle as $title) {
                 $url = url('/public/'.$title->images)."?w=75&h=50&fit=crop-center";
                 $data.= "<li><a href=\"/tour/$title->slug\"><img src=\"$url\" alt=\"$title->title\"> $title->title
-                    <div> From $ $title->price USD per person </div > 
+                    <div> From $ $title->price USD per person </div >
                     <div class=\"clearfix\" ></div>
                     </a>
                     </li>";
@@ -66,6 +67,32 @@ class AjaxController extends Controller
                   <a href=\"/tours/?search=$request->keyword\"><i class=\"fa fa-search\"></i> Find more results</a>
                 </div>";
         echo $data;
+    }
+
+    public function searchBlogResult() {
+
+      $blogs = Blog::join('blog_categories','blog_categories.id','blogs.category_id')
+          ->where('title','like',"%".$request->keyword."%")
+          ->get();
+
+      if(count($blogs)>0) {
+          $data.= "<ul class=\"search_li img_li\">";
+          foreach($blogs as $blog) {
+              $url = url('/public/'.$blog->cover_image)."?w=75&h=50&fit=crop-center";
+              $data.= "<li><a href=\"/blog/$blog->slug\"><img src=\"$url\" alt=\"$blog->title\"> $blog->title
+                  <div> $blog->category  $blog->slug</div >
+                  <div class=\"clearfix\" ></div>
+                  </a>
+                  </li>";
+          }
+          $data.= "</ul>";
+      }
+      $data.= "</div>
+               <div class=\"more_result\">
+                <a href=\"/tours/?search=$request->keyword\"><i class=\"fa fa-search\"></i> Find more results</a>
+              </div>";
+      echo $data;
+
     }
 
     public function clienLog() {

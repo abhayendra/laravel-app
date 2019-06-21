@@ -205,7 +205,6 @@ class TourController extends Controller
             $tours = Tour::with('category','tourImages')
                 ->paginate('24');
         }
-
         //echo "<pre>"; print_r($tours); echo "</pre>"; die;
 
         return view('frontend.tour.category',compact('categories','tours','categoryName'));
@@ -221,6 +220,7 @@ class TourController extends Controller
         $review->status = 1;
         $review->save();
         return redirect()->back();
+
     }
 
 }

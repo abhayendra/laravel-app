@@ -7,9 +7,11 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <div class="fld_wra">
-                    <input type="text" placeholder="Search destination, small group tours, hotel, cruise, deals" class="fld1"> <button class="btn1">Search</button>
-                </div>
+              <div class="fld_wra">
+                  <input type="text" name="search" value="" id="search-box-blog" autocomplete="off" placeholder="Search Blog" class="fld1"> <button type="submit" class="btn1">Find Blog</button>
+                  <div class="search_dd" id="suggesstion-box-blog">
+                  </div>
+              </div>
             </div>
         </div>
     </div>
@@ -33,7 +35,7 @@
             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                 @php $i=1;  @endphp
                 @foreach($blogs as $key=>$blog)
-                    @php print_r($blog); @endphp
+
                 <div class="heading2">
                     @if($i==1)
                     <select class="category" id="category">
@@ -83,12 +85,21 @@
                 </div>
                 <div class="newsletter_wra">
                     <h2>Sign up for newsletter</h2>
+                    @if (Session::has('subscriptionsuccess'))
+                        <div class="alert alert-success text-center">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                            <p>{{ Session::get('subscriptionsuccess') }}</p>
+                        </div>
+                    @endif
                     <div class="newsletter_box">
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+                          {!! Form::open(['url'=>'email-subscription']) !!}
                             <tr>
-                                <td><input name="" type="text" placeholder="Your Email ID"></td>
+                                <td><input name="email" type="text" placeholder="Your Email ID"></td>
                                 <td width="55"><button><i class="fa fa-arrow-right" aria-hidden="true"></i></button></td>
                             </tr>
+                          {!! Form::close() !!}
                         </table>
                     </div>
                 </div>
@@ -111,5 +122,24 @@
         padding: 15px 5px;
     }
 </style>
+<script>
+$(document).ready(function(){
+       $("#search-box-blog").keyup(function(){
+           $.ajax({
+               type: "GET",
+               url: "<?php echo url('/search-blog') ?>",
+               data:'keyword='+$(this).val(),
+               beforeSend: function(){
+                   $("#search-box-blog").css("display:block");
+               },
+               success: function(data){
+                   $("#suggesstion-box-blog").show();
+                   $("#suggesstion-box-blog").html(data);
+                   $("#search-box-blog").css("background","#FFF");
+               }
+           });
+       });
+   });
+</script>
 <!--end blog-->
 @endsection

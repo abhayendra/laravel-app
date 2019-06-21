@@ -34,7 +34,7 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 Route::get('dashboard','UserController@dashboard');
 Route::get('saveWishlist/{tour_id}','UserController@saveWishlist');
 Route::get('wishlist','UserController@wishlist');
-Route::get('/user/edit_profile/{id}','UserController@editProfile');
+Route::get('/user/edit_profile/{id}','UserController@editProfile');
 Route::post('/user/saveEditProfile','UserController@saveEditProfile');
 
 
@@ -61,13 +61,15 @@ Route::post('stripe', 'OrderController@stripePost')->name('stripe.post');
 
 //Ajax Controller
 Route::get('search','AjaxController@searchResult');
+Route::get('search-blog','AjaxController@searchBlogResult');
 Route::get('client-log','AjaxController@clienLog');
 Route::get('getCountry','AjaxController@country');
 Route::get('getProvince','AjaxController@province');
 
 //Blog Controller
 Route::get('blog','BlogController@index');
-Route::get('blog/details/{slug}','BlogController@details');
+Route::get('blog/details/{slug}','BlogController@details');
+Route::post('email-subscription','BlogController@EmailSubscription');
 
 //forum
 Route::get('forum','ForumController@index');
