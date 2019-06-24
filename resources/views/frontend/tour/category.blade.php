@@ -85,7 +85,7 @@
 
                               <div class="price2">
                                 @php $price = \App\Helpers\Helper::tourPrice($singleTour->id) @endphp
-                                From USD<b>${!! $price[0]->price !!}</b><p> <span>${!! $price[0]->price !!}</span>  Save ${!! $price[0]->price !!}</p>
+                                From CAD<b>${!! $price[0]->price !!}</b><p> <span>${!! $price[0]->price !!}</span>  Save ${!! $price[0]->price !!}</p>
                                 <div class="see_btn">See Details</div>
                               </div>
 
@@ -94,7 +94,7 @@
                                 <strong>Duration:</strong> {!! $singleTour->tour_duration !!}<br>
                                 <strong>Tour Code:</strong> {!! $singleTour->tour_code !!}
                               </div>
-                              <div class="tour_tag">
+                              <!--<div class="tour_tag">
                                 <span class="tag_green">Great Value</span>
                                 <span class="tag_red">Likely to sell out</span>
                               </div>
@@ -102,7 +102,7 @@
                                 <p class="red_line">Booked 3 times for your dates in the last 12 hours</p>
                                 <p class="green_line">Risk free: You can cancel later, so lock in this great price today</p>
                               </div>
-
+                              -->
                               <div class="clearfix"></div>
                             </div>
                            <div class="clearfix"></div>

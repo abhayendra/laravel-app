@@ -50,13 +50,16 @@ class UserController extends Controller
          $user->phone = $request->phone;
          $user->gender = $request->gender;
          $user->date_of_birth = $request->date_of_birth;
+         $user->save();
+         return redirect('/dashboard');
+    }
+
+    public function savePassword(Request $request) {
+         $user = User::find($request->user_id);
          $user->password = bcrypt($request->password);
          $user->save();
          return redirect('/dashboard');
-
     }
-
-
 
 
 

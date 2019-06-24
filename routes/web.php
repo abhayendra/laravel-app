@@ -36,7 +36,7 @@ Route::get('saveWishlist/{tour_id}','UserController@saveWishlist');
 Route::get('wishlist','UserController@wishlist');
 Route::get('/user/edit_profile/{id}','UserController@editProfile');
 Route::post('/user/saveEditProfile','UserController@saveEditProfile');
-
+Route::post('/user/savePassword','UserController@savePassword');
 
 Route::get('/redirect/{service}','SocialAuthController@redirect');
 Route::get('/callback/{service}','SocialAuthController@callback');

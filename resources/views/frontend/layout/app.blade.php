@@ -181,7 +181,7 @@
                                 $ftour = explode('/',$ftValue->page_url);
                                 $ft = urlencode(end($ftour));
                           @endphp
-                          <a href="{!! url('/location/'.urldecode($ft)) !!}">{!! ucfirst(str_replace('+',' ',urldecode($ft))) !!}</a>  |
+                          <a href="{!! url('/location/'.urldecode($ft)) !!}">{!! ucfirst(str_replace(array('+','%2B','%20'),' ',urldecode($ft))) !!}</a>  |
                           @endforeach
                          </p>
                     </div>
@@ -196,7 +196,7 @@
                                 $stour = explode('/',$sValue->page_url);
                                 $st = urlencode(end($stour));
                                 @endphp
-                                <a href="{!! url('/location/'.urldecode($st)) !!}">{!! ucfirst(str_replace('+',' ',urldecode($st))) !!}</a>  |
+                                <a href="{!! url('/location/'.urldecode($st)) !!}">{!! ucfirst(str_replace(array('+','%2B','%20'),' ',urldecode($st))) !!}</a>  |
                             @endforeach
                         </p>
                     </div>
@@ -311,7 +311,7 @@ $('.r-tabs-anchor').click(function() {
                     });
                 }
             }
-            
+
         });
     $(document).ready(function(){
         $("#search-box").keyup(function(){

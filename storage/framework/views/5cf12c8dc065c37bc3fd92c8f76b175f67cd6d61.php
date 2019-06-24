@@ -38,7 +38,25 @@
             </ol>
             <div class="page">
             </div>
-            
+            <div class="view_link">
+              <div class="btn-group btn-group-sm row_grid" role="group" aria-label="..." >
+                <button type="button" class="btn btn-success active"><i class="fa fa-th-list"></i> List</button>
+                <button type="button" class="btn btn-success"><i class="fa fa-th"></i> Grid</button>
+              </div>
+            </div>
+            <div class="short_wra">
+             Short By:
+             <select class="sortby" id="shortBy">
+                 <option <?php echo e($order == 'relevance' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=relevance'); ?>">Relevance</option>
+                 <option <?php echo e($order == 'new' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=new'); ?>">New &amp; Popular</option>
+                 <option <?php echo e($order == 'review_high' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=review_high'); ?>">Reviews - high to low</option>
+                 <option <?php echo e($order == 'review_low' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=review_low'); ?>">Reviews - low to high</option>
+                 <option <?php echo e($order == 'price_high' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=price_high'); ?>">Price - high to low</option>
+                 <option <?php echo e($order == 'price_low' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=price_low'); ?>">Price - low to high</option>
+                 <option <?php echo e($order == 'duration_high' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=duration_high'); ?>">Duration - high to low</option>
+                 <option <?php echo e($order == 'duration_low' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=duration_low'); ?>">Duration - low to high</option>
+             </select>
+             </div>
             <div class="clearfix"></div>
         </div>
     </div>
@@ -50,32 +68,7 @@
         <div class="row">
             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 col-lg-push-3 col-md-push-3 col-sm-push-3">
                 <div class="mid_listing">
-                    <div class="row">
-                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                        <div class="result_heading">Category: <?php echo $categoryName; ?></div>
-                      </div>
-                      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-9 text-right">
-                        <div class="short_wra" id="short_by">
-                            Short By:
-                            <select class="sortby" id="shortBy">
-                                <option <?php echo e($order == 'relevance' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=relevance'); ?>">Relevance</option>
-                                <option <?php echo e($order == 'new' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=new'); ?>">New &amp; Popular</option>
-                                <option <?php echo e($order == 'review_high' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=review_high'); ?>">Reviews - high to low</option>
-                                <option <?php echo e($order == 'review_low' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=review_low'); ?>">Reviews - low to high</option>
-                                <option <?php echo e($order == 'price_high' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=price_high'); ?>">Price - high to low</option>
-                                <option <?php echo e($order == 'price_low' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=price_low'); ?>">Price - low to high</option>
-                                <option <?php echo e($order == 'duration_high' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=duration_high'); ?>">Duration - high to low</option>
-                                <option <?php echo e($order == 'duration_low' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=duration_low'); ?>">Duration - low to high</option>
-                            </select>
-                        </div>
-                      </div>
-                      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-right">
-                        <div class="btn-group btn-group-sm row_grid" role="group" aria-label="..." >
-                          <button type="button" class="btn btn-success active"><i class="fa fa-th-list"></i> List</button>
-                          <button type="button" class="btn btn-success"><i class="fa fa-th"></i> Grid</button>
-                        </div>
-                      </div>
-                    </div>
+                    <div class="result_heading">Category: <?php echo $categoryName; ?></div>
                     <div class="line2"></div>
                     <div class="list_row_wra">
                       <div class="row_wra" id="row_wra">
@@ -97,17 +90,17 @@
 
                               <div class="price2">
                                 <?php $price = \App\Helpers\Helper::tourPrice($singleTour->id) ?>
-                                From USD<b>$<?php echo $price[0]->price; ?></b><p> <span>$<?php echo $price[0]->price; ?></span>  Save $<?php echo $price[0]->price; ?></p>
+                                From CAD<b>$<?php echo $price[0]->price; ?></b><p> <span>$<?php echo $price[0]->price; ?></span>  Save $<?php echo $price[0]->price; ?></p>
                                 <div class="see_btn">See Details</div>
                               </div>
 
                               <div class="list_detail">
-                                <strong>From:</strong>: <?php echo $singleTour->departure_point; ?><br>
-                                <strong>Duration:</strong>: <?php echo $singleTour->tour_duration; ?><br>
+                                <strong>From:</strong> <?php echo $singleTour->departure_point; ?><br>
+                                <strong>Duration:</strong> <?php echo $singleTour->tour_duration; ?><br>
                                 <strong>Tour Code:</strong> <?php echo $singleTour->tour_code; ?>
 
                               </div>
-                              <div class="tour_tag">
+                              <!--<div class="tour_tag">
                                 <span class="tag_green">Great Value</span>
                                 <span class="tag_red">Likely to sell out</span>
                               </div>
@@ -115,7 +108,7 @@
                                 <p class="red_line">Booked 3 times for your dates in the last 12 hours</p>
                                 <p class="green_line">Risk free: You can cancel later, so lock in this great price today</p>
                               </div>
-
+                              -->
                               <div class="clearfix"></div>
                             </div>
                            <div class="clearfix"></div>

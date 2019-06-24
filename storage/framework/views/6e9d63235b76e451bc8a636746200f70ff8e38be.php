@@ -207,7 +207,7 @@
                                 $ftour = explode('/',$ftValue->page_url);
                                 $ft = urlencode(end($ftour));
                           ?>
-                          <a href="<?php echo url('/location/'.urldecode($ft)); ?>"><?php echo ucfirst(str_replace('+',' ',urldecode($ft))); ?></a>  |
+                          <a href="<?php echo url('/location/'.urldecode($ft)); ?>"><?php echo ucfirst(str_replace(array('+','%2B','%20'),' ',urldecode($ft))); ?></a>  |
                           <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                          </p>
                     </div>
@@ -222,7 +222,7 @@
                                 $stour = explode('/',$sValue->page_url);
                                 $st = urlencode(end($stour));
                                 ?>
-                                <a href="<?php echo url('/location/'.urldecode($st)); ?>"><?php echo ucfirst(str_replace('+',' ',urldecode($st))); ?></a>  |
+                                <a href="<?php echo url('/location/'.urldecode($st)); ?>"><?php echo ucfirst(str_replace(array('+','%2B','%20'),' ',urldecode($st))); ?></a>  |
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </p>
                     </div>
@@ -343,7 +343,7 @@ $('.r-tabs-anchor').click(function() {
                     });
                 }
             }
-            
+
         });
     $(document).ready(function(){
         $("#search-box").keyup(function(){
