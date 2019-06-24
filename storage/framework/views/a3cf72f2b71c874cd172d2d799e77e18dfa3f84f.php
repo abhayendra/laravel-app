@@ -1,14 +1,14 @@
 <?php $__env->startSection('content'); ?>
-
-
 <!--breadcrumb-->
 <div class="search_wra">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <div class="fld_wra">
-                    <input type="text" placeholder="Search destination, small group tours, hotel, cruise, deals" class="fld1"> <button class="btn1">Search</button>
-                </div>
+              <div class="fld_wra">
+                  <input type="text" name="search" value="" id="search-box-blog" autocomplete="off" placeholder="Search Blog" class="fld1"> <button type="submit" class="btn1">Find Blog</button>
+                  <div class="search_dd" id="suggesstion-box-blog">
+                  </div>
+              </div>
             </div>
         </div>
     </div>
@@ -32,7 +32,6 @@
             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
                 <?php $i=1;  ?>
                 <?php $__currentLoopData = $blogs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key=>$blog): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <?php print_r($blog); ?>
                 <div class="heading2">
                     <?php if($i==1): ?>
                     <select class="category" id="category">
@@ -47,13 +46,13 @@
                 </div>
                 <?php $__currentLoopData = $blog; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $b): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="blog_box">
-                    <div class="blog_img"><?php echo Html::image('resources/assets/images/blog1.jpg','',['class'=>'img-res']); ?></div>
+                    <div class="blog_img"><?php echo Html::image($b['cover_image'],'',['class'=>'img-res']); ?></div>
                     <div class="blog_txt">
-                        <h2><a href="<?php echo url("blog/details/".$b['slug']); ?>"><?php echo $b['title']; ?></a></h2>
+                        <h2><a href="<?php echo url("blog/".$b['slug']); ?>"><?php echo $b['title']; ?></a></h2>
                         <div class="date_row"><a href="#"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> <?php echo date('d M Y ', strtotime($b['created_at'])); ?></a> <a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i> <?php echo $b['location']; ?></a>  <a href="#"><i class="fa fa-comment-o" aria-hidden="true"></i> 0 comment</a></div>
                         <p><?php echo e(substr(strip_tags($b['content']),0,250)); ?></p>
                         <div class="by"><a href="#">By: Superadmin </a></div>
-                        <div class="read_more"><a href="<?php echo url("blog/details/".$b['slug']); ?>">Read More</a></div>
+                        <div class="read_more"><a href="<?php echo url("blog/".$b['slug']); ?>">Read More</a></div>
                         <div class="clearfix"></div>
                     </div>
                     <div class="clearfix"></div>
@@ -82,12 +81,23 @@
                 </div>
                 <div class="newsletter_wra">
                     <h2>Sign up for newsletter</h2>
+                    <?php if(Session::has('subscriptionsuccess')): ?>
+                        <div class="alert alert-success text-center">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                            <p><?php echo e(Session::get('subscriptionsuccess')); ?></p>
+                        </div>
+                    <?php endif; ?>
                     <div class="newsletter_box">
                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+                          <?php echo Form::open(['url'=>'email-subscription']); ?>
+
                             <tr>
-                                <td><input name="" type="text" placeholder="Your Email ID"></td>
+                                <td><input name="email" type="text" placeholder="Your Email ID"></td>
                                 <td width="55"><button><i class="fa fa-arrow-right" aria-hidden="true"></i></button></td>
                             </tr>
+                          <?php echo Form::close(); ?>
+
                         </table>
                     </div>
                 </div>
@@ -110,6 +120,25 @@
         padding: 15px 5px;
     }
 </style>
+<script>
+$(document).ready(function(){
+       $("#search-box-blog").keyup(function(){
+           $.ajax({
+               type: "GET",
+               url: "<?php echo url('/search-blog') ?>",
+               data:'keyword='+$(this).val(),
+               beforeSend: function(){
+                   $("#search-box-blog").css("display:block");
+               },
+               success: function(data){
+                   $("#suggesstion-box-blog").show();
+                   $("#suggesstion-box-blog").html(data);
+                   $("#search-box-blog").css("background","#FFF");
+               }
+           });
+       });
+   });
+</script>
 <!--end blog-->
 <?php $__env->stopSection(); ?>
 

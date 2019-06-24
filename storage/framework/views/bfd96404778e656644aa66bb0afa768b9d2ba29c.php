@@ -38,19 +38,6 @@
             </ol>
             <div class="page">
             </div>
-            <div class="short_wra" id="short_by">
-                Short By:
-                <select class="sortby" id="shortBy">
-                    <option value="<?php echo url(Request::segment(1).'/'.$keyword.'?order=relevance'); ?>">Relevance</option>
-                    <option value="<?php echo url(Request::segment(1).'/'.$keyword.'?order=new'); ?>">New &amp; Popular</option>
-                    <option value="<?php echo url(Request::segment(1).'/'.$keyword.'?order=review_high'); ?>">Reviews - high to low</option>
-                    <option value="<?php echo url(Request::segment(1).'/'.$keyword.'?order=review_low'); ?>">Reviews - low to high</option>
-                    <option value="<?php echo url(Request::segment(1).'/'.$keyword.'?order=price_high'); ?>">Price - high to low</option>
-                    <option value="<?php echo url(Request::segment(1).'/'.$keyword.'?order=price_low'); ?>">Price - low to high</option>
-                    <option value="<?php echo url(Request::segment(1).'/'.$keyword.'?order=duration_high'); ?>">Duration - high to low</option>
-                    <option value="<?php echo url(Request::segment(1).'/'.$keyword.'?order=duration_low'); ?>">Duration - low to high</option>
-                </select>
-            </div>
             <div class="clearfix"></div>
         </div>
     </div>
@@ -63,42 +50,93 @@
             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 col-lg-push-3 col-md-push-3 col-sm-push-3">
                 <?php if(count($tours)>0): ?>
                 <div class="mid_listing">
-                    <div class="result_heading"><?php echo ucfirst(urldecode($keyword)); ?>  <?php if($keyword!="all"): ?> & Around <?php endif; ?>  Tours, Tickets & Activities</div>
+                    <div class="row">
+                      <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <div class="result_heading"><?php echo ucfirst(urldecode($keyword)); ?>  <?php if($keyword!="all"): ?> & Around <?php endif; ?>  Tours, Tickets & Activities</div>
+                      </div>
+                      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-9 text-right">
+                        <div class="short_wra" id="short_by">
+                            Short By:
+                            <select class="sortby" id="shortBy">
+                                <option <?php echo e($order == 'relevance' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=relevance'); ?>">Relevance</option>
+                                <option <?php echo e($order == 'new' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=new'); ?>">New &amp; Popular</option>
+                                <option <?php echo e($order == 'review_high' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=review_high'); ?>">Reviews - high to low</option>
+                                <option <?php echo e($order == 'review_low' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=review_low'); ?>">Reviews - low to high</option>
+                                <option <?php echo e($order == 'price_high' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=price_high'); ?>">Price - high to low</option>
+                                <option <?php echo e($order == 'price_low' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=price_low'); ?>">Price - low to high</option>
+                                <option <?php echo e($order == 'duration_high' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=duration_high'); ?>">Duration - high to low</option>
+                                <option <?php echo e($order == 'duration_low' ? ' selected' : ''); ?> value="<?php echo url(Request::segment(1).'/'.'?search='.$search.'&order=duration_low'); ?>">Duration - low to high</option>
+                            </select>
+                        </div>
+                      </div>
+                      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 text-right">
+                        <div class="btn-group btn-group-sm row_grid" role="group" aria-label="..." >
+                          <button type="button" class="btn btn-success active"><i class="fa fa-th-list"></i> List</button>
+                          <button type="button" class="btn btn-success"><i class="fa fa-th"></i> Grid</button>
+                        </div>
+                      </div>
+                    </div>
                     <div class="line2"></div>
                     <div class="list_row_wra">
-                        <?php $__currentLoopData = $tours; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $singleTour): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <div class="tour_box_wra">
-                                <div class="tour_box">
-                                    <a href="<?php echo url('/tour/'.$singleTour->slug); ?>"><?php echo Html::image('public/'.$singleTour->images.'?w=400&h=250&fit=crop-center','',['class'=>'img-res']); ?></a>
-                                    <div class="tour_title"><a href="<?php echo url('/tour/'.$singleTour->slug); ?>"><?php echo @$singleTour->title; ?></a></div>
-                                    <div class="rating">
-                                        <?php $rating =  \App\Helpers\Helper::review($singleTour->id); ?>
-                                        <?php echo $rating; ?>
+                      <div class="row_wra" id="row_wra">
+                      <?php $__currentLoopData = $tours; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $singleTour): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                      <div class="thumb_pad">
+                         <div class="thumb_view">
+                           <a href="<?php echo url('/tour/'.$singleTour->slug); ?>">
+                           <div class="tour_box_img">
+                             <?php echo Html::image('public/'.$singleTour->images.'?w=400&h=250&fit=crop-center','',['class'=>'img-res']); ?>
 
-                                    </div>
-                                    <div class="list_detail">
-                                        From: <?php echo $singleTour->departure_point; ?><br>
-                                        Duration: <?php echo $singleTour->tour_duration; ?><br>
-                                        Tour Code: <?php echo $singleTour->tour_code; ?>
+                           </div>
+                           <div class="tour_box_detail">
+                              <div class="tour_title"><?php echo @$singleTour->title; ?></div>
+                              <div class="rating">
+                                <?php $rating =  \App\Helpers\Helper::review($singleTour->id); ?>
+                                <?php echo $rating; ?>
 
-                                    </div>
-                                    <?php $price = \App\Helpers\Helper::tourPrice($singleTour->id) ?>
-                                    <div class="price2"> From $ <?php echo $price[0]->price; ?></div>
-                                    <div class="clearfix"></div>
-                                </div>
+                              </div>
+
+                              <div class="price2">
+                                <?php $price = \App\Helpers\Helper::tourPrice($singleTour->id) ?>
+                                From USD<b>$<?php echo $price[0]->price; ?></b><p> <span>$<?php echo $price[0]->price; ?></span>  Save $<?php echo $price[0]->price; ?></p>
+                                <div class="see_btn">See Details</div>
+                              </div>
+
+                              <div class="list_detail">
+                                <strong>From:</strong> <?php echo $singleTour->departure_point; ?><br>
+                                <strong>Duration:</strong> <?php echo $singleTour->tour_duration; ?><br>
+                                <strong>Tour Code:</strong> <?php echo $singleTour->tour_code; ?>
+
+                              </div>
+                              <div class="tour_tag">
+                                <span class="tag_green">Great Value</span>
+                                <span class="tag_red">Likely to sell out</span>
+                              </div>
+                              <div class="tag_line_wra">
+                                <p class="red_line">Booked 3 times for your dates in the last 12 hours</p>
+                                <p class="green_line">Risk free: You can cancel later, so lock in this great price today</p>
+                              </div>
+
+                              <div class="clearfix"></div>
                             </div>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                         <div class="clearfix"></div>
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="social_share"><div class="sharethis-inline-share-buttons"></div></div>
-                                <div class="page">
-                                    <?php echo e($tours->links()); ?>
+                           <div class="clearfix"></div>
+                           </a>
+                         </div>
+                      </div>
+                      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                      </div>
 
-                                </div>
-                                <div class="clearfix"></div>
+                      <div class="clearfix"></div>
+                      <div class="row">
+                        <div class="col-lg-12">
+                            <div class="social_share"><div class="sharethis-inline-share-buttons"></div></div>
+                            <div class="page">
+                                <?php echo e($tours->links()); ?>
+
                             </div>
+                            <div class="clearfix"></div>
                         </div>
+                      </div>
+
                     </div>
                 </div>
                 <?php else: ?>
@@ -147,6 +185,21 @@
                 window.location = url; // redirect
             }
             return false;
+        });
+        //row grid
+        $('.row_grid button').on('click', function() {
+          $('.row_grid button').removeClass('active');
+          $(this).addClass('active');
+
+          $( "#row_wra" ).toggleClass(function() {
+            if ( $( this ).is( ".row_wra" ) ) {
+              $( "#row_wra" ).removeClass('row_wra');
+              return "grid_wra";
+            } else {
+              $( "#row_wra" ).removeClass('grid_wra');
+              return "row_wra";
+            }
+          });
         });
     });
 </script>

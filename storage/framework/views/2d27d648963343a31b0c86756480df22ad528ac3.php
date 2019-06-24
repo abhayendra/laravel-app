@@ -202,7 +202,7 @@
 
           $( "#row_wra" ).toggleClass(function() {
             if ( $( this ).is( ".row_wra" ) ) {
-$( "#row_wra" ).removeClass('row_wra');
+              $( "#row_wra" ).removeClass('row_wra');
               return "grid_wra";
             } else {
               $( "#row_wra" ).removeClass('grid_wra');
